@@ -420,7 +420,9 @@ paths:
     get:
       summary: Your GET endpoint
       tags: []
-      responses: {}
+      responses:
+        '200':
+          $ref: '#/components/responses/success'
       operationId: get-pot
       description: Get the details of a pot still
     parameters:
@@ -438,15 +440,20 @@ paths:
   /fractionalstills:
     get:
       summary: Your GET endpoint
+      description: List of all fractional stills
       tags: []
-      responses: {}
+      responses:
+        '200':
+          $ref: '#/components/responses/success'
       operationId: get-fractionals
     parameters: []
   /stills:
     get:
       summary: Your GET endpoint
       tags: []
-      responses: {}
+      responses:
+        '200':
+          $ref: '#/components/responses/success'
       operationId: get-stills
       description: List all of the available stills
       parameters:
