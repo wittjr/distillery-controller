@@ -345,7 +345,8 @@ paths:
   '/potstills/{still-id}':
     get:
       summary: Your GET endpoint
-      tags: []
+      tags:
+        - pot
       responses:
         '200':
           $ref: '#/components/responses/success'
@@ -357,7 +358,8 @@ paths:
     parameters: []
     get:
       summary: Your GET endpoint
-      tags: []
+      tags:
+        - pot
       responses:
         '200':
           $ref: '#/components/responses/success'
@@ -367,7 +369,8 @@ paths:
     get:
       summary: Get all of the fractional stills
       description: List of all fractional stills
-      tags: []
+      tags:
+        - fractional
       responses:
         '200':
           $ref: '#/components/responses/success'
@@ -375,8 +378,10 @@ paths:
     parameters: []
   /stills:
     get:
-      summary: Your GET endpoint
-      tags: []
+      summary: Get all stills
+      tags:
+        - fractional
+        - pot
       responses:
         '200':
           $ref: '#/components/responses/success'
@@ -394,7 +399,8 @@ paths:
       - $ref: '#/components/parameters/still-id'
     get:
       summary: Get the active batch
-      tags: []
+      tags:
+        - fractional
       responses:
         '200':
           $ref: '#/components/responses/success'
@@ -409,6 +415,8 @@ paths:
         '200':
           description: OK
       description: Cancel the active fractional still batch
+      tags:
+        - fractional
   '/fractionalstills/{still-id}/heat/{new-state}':
     parameters:
       - $ref: '#/components/parameters/still-id'
@@ -427,7 +435,8 @@ paths:
       - $ref: '#/components/parameters/still-id'
     get:
       summary: Get the valve status
-      tags: []
+      tags:
+        - fractional
       responses:
         '200':
           $ref: '#/components/responses/success'
