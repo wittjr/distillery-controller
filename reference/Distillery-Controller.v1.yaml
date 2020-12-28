@@ -317,26 +317,21 @@ paths:
       description: Get the status of the heating element
     parameters:
       - $ref: '#/components/parameters/still-id'
-  '/fractionalstills/{still-id}/fracchecktemp':
+  '/fractionalstills/{still-id}/temperature':
     get:
-      summary: temp check
+      summary: Check the still temperature
       tags:
         - fractional
         - unused
       responses:
         '200':
           description: OK
-      operationId: get-fracchecktemp
-      description: something
+      operationId: get-temperature
+      description: Get the current still temperature
     parameters:
       - $ref: '#/components/parameters/still-id'
   '/fractionalstills/{still-id}/valve/{valve-action}':
     parameters:
-      - schema:
-          type: string
-        name: still-id
-        in: path
-        required: true
       - schema:
           type: string
           enum:
@@ -345,6 +340,7 @@ paths:
         name: valve-action
         in: path
         required: true
+        description: 'The action to perform, either open or close'
       - $ref: '#/components/parameters/still-id'
     put:
       summary: ''
