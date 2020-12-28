@@ -1,0 +1,527 @@
+openapi: 3.0.0
+info:
+  title: Distillery Controller
+  version: '1.0'
+  contact:
+    name: Jamie Witt
+    url: 'https://jamiewitt.com'
+    email: me@jamiewitt.com
+  description: A server to control distillery functions using Phidget controllers.x
+servers:
+  - url: 'https://localhost:3000/distillery/v1'
+externalDocs:
+  url: 'https://www.phidgets.com/?view=api&product_id=OUT1100_0&lang=JavaScript'
+  description: Phidget API
+tags:
+  - name: fractional
+    description: Fractional still related operations
+  - name: pot
+    description: Pot still related operations
+  - name: history
+    description: Historical data related operations
+  - name: used
+    description: Used operations
+  - name: unused
+    description: Unused operations
+paths:
+  '/potstills/{still_id}/potsummary':
+    get:
+      summary: Your GET endpoint
+      tags:
+        - pot
+        - used
+      responses:
+        '200':
+          description: OK
+      operationId: get-distillery-v1-potsummary
+      description: Get the summary for the pot
+    parameters:
+      - $ref: '#/components/parameters/still_id'
+  '/potsills/{still_id}/potgraphdata':
+    get:
+      summary: get pot graph data
+      tags:
+        - pot
+        - used
+      responses:
+        '200':
+          description: OK
+      operationId: get-potgraphdata
+      description: something
+    parameters:
+      - $ref: '#/components/parameters/still_id'
+  /history/historicaldata:
+    get:
+      summary: get historical data
+      tags:
+        - history
+        - used
+      responses:
+        '200':
+          description: OK
+      operationId: get-historicaldata
+      description: something
+    parameters: []
+  '/history/historicaldata/{batch_id}':
+    parameters:
+      - schema:
+          type: string
+        name: batch_id
+        in: path
+        required: true
+        description: The ID of the batch to retrieve
+    get:
+      summary: get historical data by id
+      tags:
+        - history
+        - used
+      responses:
+        '200':
+          description: OK
+      operationId: get-historicaldata-batch_id
+      description: something
+  /history/rundata:
+    get:
+      summary: get run data
+      tags:
+        - history
+        - used
+      responses:
+        '200':
+          description: OK
+      operationId: get-rundata
+      description: something
+    parameters: []
+  '/history/rundata/{batch_id}':
+    parameters:
+      - schema:
+          type: string
+        name: batch_id
+        in: path
+        required: true
+    get:
+      summary: get run data by id
+      tags:
+        - history
+        - unused
+      responses:
+        '200':
+          description: OK
+      operationId: get-rundata-batch_id
+      description: something
+    post:
+      summary: update run data by id
+      tags:
+        - history
+        - used
+      responses:
+        '200':
+          description: OK
+      operationId: post-rundata-batch_id
+      description: something
+  '/potstills/{still_id}/getpotcolumntemperature':
+    get:
+      summary: get pot temperature
+      tags:
+        - pot
+        - unused
+      responses:
+        '200':
+          description: OK
+      operationId: get-getpotcolumntemperature
+      description: something
+    parameters:
+      - $ref: '#/components/parameters/still_id'
+  '/potstills/{still_id}/startpottemperaturelogging':
+    get:
+      summary: start pot temp logging
+      tags:
+        - pot
+        - unused
+      responses:
+        '200':
+          description: OK
+      operationId: get-startpottemperaturelogging
+      description: something
+    parameters:
+      - $ref: '#/components/parameters/still_id'
+  '/potstills/{still_id}/stoppottemperaturelogging':
+    get:
+      summary: stop pot temp logging
+      tags:
+        - pot
+        - unused
+      responses:
+        '200':
+          description: OK
+      operationId: get-stoppottemperaturelogging
+      description: something
+    parameters:
+      - $ref: '#/components/parameters/still_id'
+  '/potstills/{still_id}/potheaton':
+    get:
+      summary: pot heat on
+      tags:
+        - pot
+        - unused
+      responses:
+        '200':
+          description: OK
+      operationId: get-potheaton
+      description: something
+    parameters:
+      - $ref: '#/components/parameters/still_id'
+  '/potstills/{still_id}/pothighvoltageheaton':
+    get:
+      summary: pot high voltage
+      tags:
+        - pot
+        - unused
+      responses:
+        '200':
+          description: OK
+      operationId: get-pothighvoltageheaton
+      description: something
+    parameters:
+      - $ref: '#/components/parameters/still_id'
+  '/potstills/{still_id}/potheatoff':
+    get:
+      summary: turn off pot heat
+      tags:
+        - pot
+        - unused
+      responses:
+        '200':
+          description: OK
+      operationId: get-potheatoff
+      description: something
+    parameters:
+      - $ref: '#/components/parameters/still_id'
+  '/potstills/{still_id}/resetpotafterginrun':
+    get:
+      summary: reset pot
+      tags:
+        - pot
+        - unused
+      responses:
+        '200':
+          description: OK
+      operationId: get-resetpotafterginrun
+      description: something
+    parameters:
+      - $ref: '#/components/parameters/still_id'
+  '/potstills/{still_id}/setpot':
+    post:
+      summary: set pot
+      tags:
+        - pot
+        - used
+      responses:
+        '200':
+          description: OK
+      operationId: post-setpot
+      description: something
+    parameters:
+      - $ref: '#/components/parameters/still_id'
+  '/fractionalstills/{still_id}/setfractional':
+    post:
+      summary: set fractional
+      tags:
+        - fractional
+        - used
+      responses:
+        '200':
+          description: OK
+      operationId: post-setfractional
+      description: something
+    parameters:
+      - $ref: '#/components/parameters/still_id'
+  /fractionalstills/{still_id}/graphdata:
+    get:
+      summary: fractional graph data
+      tags:
+        - fractional
+        - used
+      responses:
+        '200':
+          description: OK
+      operationId: get-fractionalgraphdata
+      description: something
+    parameters:
+      - $ref: '#/components/parameters/still_id'
+  /fractionalstills/{still_id}/summary:
+    get:
+      summary: get fractional summary
+      tags:
+        - fractional
+        - used
+      responses:
+        '200':
+          description: OK
+      operationId: get-fractionalsummary
+      description: something
+    parameters:
+      - $ref: '#/components/parameters/still_id'
+  '/fractionalstills/{still_id}/startFractionalRun':
+    post:
+      summary: start a new run
+      tags:
+        - fractional
+        - used
+      responses:
+        '200':
+          description: OK
+      operationId: post-startFractionalRun
+      description: something
+    parameters:
+      - $ref: '#/components/parameters/still_id'
+  '/fractionalstills/{still_id}/fractionalStillSummary':
+    get:
+      summary: get fractional still summary
+      tags:
+        - fractional
+        - used
+      responses:
+        '200':
+          description: OK
+      operationId: get-fractionalStillSummary
+      description: something
+    parameters:
+      - $ref: '#/components/parameters/still_id'
+  /fractionalstills/{still_id}/fractionalStillGraphData:
+    get:
+      summary: get still graph data
+      tags:
+        - fractional
+        - used
+      responses:
+        '200':
+          description: OK
+      operationId: get-fractionalStillGraphData
+      description: something
+    parameters:
+      - $ref: '#/components/parameters/still_id'
+  '/fractionalstills/{still_id}/extendarm':
+    get:
+      summary: extend arm
+      tags:
+        - fractional
+        - used
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/SimpleMessage.v1.yaml
+      operationId: get-extendarm
+      description: something
+    parameters:
+      - $ref: '#/components/parameters/still_id'
+  '/fractionalstills/{still_id}/retractarm':
+    get:
+      summary: retract arm
+      tags:
+        - fractional
+        - used
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/SimpleMessage.v1.yaml
+              examples:
+                example-1:
+                  value:
+                    message: Operation completed successfully
+      operationId: get-retractarm
+      description: something
+    parameters:
+      - $ref: '#/components/parameters/still_id'
+  '/fractionalstills/{still_id}/turnonheat':
+    get:
+      summary: turn on head
+      tags:
+        - fractional
+        - unused
+      responses:
+        '200':
+          description: OK
+      operationId: get-turnonheat
+      description: something
+    parameters:
+      - $ref: '#/components/parameters/still_id'
+  '/fractionalstills/{still_id}/turnoffheat':
+    get:
+      summary: turn off heat
+      tags:
+        - fractional
+        - used
+      responses:
+        '200':
+          description: OK
+      operationId: get-turnoffheat
+      description: something
+    parameters:
+      - $ref: '#/components/parameters/still_id'
+  /fractionalstills/{still_id}/fracchecktemp:
+    get:
+      summary: temp check
+      tags:
+        - fractional
+        - unused
+      responses:
+        '200':
+          description: OK
+      operationId: get-fracchecktemp
+      description: something
+    parameters:
+      - $ref: '#/components/parameters/still_id'
+  /fractionalstills/{still_id}/openvalve:
+    get:
+      summary: open valve
+      tags:
+        - fractional
+        - used
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/SimpleMessage.v1.yaml
+              examples:
+                example-1:
+                  value:
+                    message: Operation completed successfully
+      operationId: get-openvalve
+      description: something
+    parameters:
+      - $ref: '#/components/parameters/still_id'
+  /fractionalstills/{still_id}/closevalve:
+    get:
+      summary: close valve
+      tags:
+        - fractional
+        - used
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/SimpleMessage.v1.yaml
+      operationId: get-closevalve
+      description: something
+    parameters:
+      - $ref: '#/components/parameters/still_id'
+  '/potstills/{still_id}':
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses: {}
+      operationId: get-pot
+      description: Get the details of a pot still
+    parameters:
+      - $ref: '#/components/parameters/still_id'
+  /potstills:
+    parameters: []
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          $ref: '#/components/responses/success'
+      operationId: get-pots-pot_id
+      description: Retrieve a list of all pot stills
+  /fractionalstills:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses: {}
+      operationId: get-fractionals
+    parameters: []
+  /stills:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses: {}
+      operationId: get-stills
+      description: List all of the available stills
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: type
+          description: 'The type of still to retrieve, it not specified all stills will be returned'
+    parameters: []
+components:
+  schemas:
+    batch:
+      title: batch
+      type: object
+      properties:
+        id:
+          type: string
+      x-examples:
+        example-1:
+          id: string
+  securitySchemes:
+    API-Key-1:
+      name: API Key
+      type: apiKey
+      in: header
+      description: ''
+  parameters:
+    batch_id:
+      name: batch_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The ID of the batch run
+    still_id:
+      name: still_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The ID of the still on which to operate
+  responses:
+    success:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            properties:
+              id:
+                type: string
+          examples:
+            example-1:
+              value:
+                id: string
+    not-found:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            properties:
+              id:
+                type: string
+    general-error:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            properties:
+              id:
+                type: string
+          examples:
+            example-1:
+              value:
+                id: string
+        application/xml:
+          schema:
+            type: object
+            properties: {}

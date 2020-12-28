@@ -1,0 +1,13 @@
+type: object
+title: SimpleMessage
+description: Basic message response
+x-examples:
+  example-1:
+    message: Operation completed successfully
+additionalProperties: false
+properties:
+  message:
+    type: string
+    example: Operation completed successfully
+required:
+  - message
