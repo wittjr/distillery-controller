@@ -225,33 +225,35 @@ paths:
       description: something
     parameters:
       - $ref: '#/components/parameters/still_id'
-  '/fractionalstills/{still_id}/batches/{batch_id}':
+  '/fractionalstills/{still_id}/batches':
     post:
-      summary: Start a fractional still run
+      summary: Start a fractional still batch
       tags:
         - fractional
         - used
       responses:
         '200':
           $ref: '#/components/responses/success'
-      operationId: create-fractionalstill-run
-      description: Start a still run
+      operationId: create-fractionalstill-batch
+      description: Start a still batch
     parameters:
-      - schema:
-          type: string
-        name: still_id
-        in: path
-        required: true
-      - schema:
-          type: string
-        name: batch_id
-        in: path
-        required: true
+      - $ref: '#/components/parameters/still_id'
+    get:
+      summary: Get all batches for a still
+      operationId: get-all-fractionalstill-batch
+      responses:
+        '200':
+          $ref: '#/components/responses/success'
+      description: Get the specified batch for the still
+      tags:
+        - fractional
+  '/fractionalstills/{still_id}/batches/{batch_id}':
+    parameters:
       - $ref: '#/components/parameters/still_id'
       - $ref: '#/components/parameters/batch_id'
     get:
-      summary: Get all batches for a still
-      operationId: get-fractionalstill-run
+      summary: Get a specific batch for a still
+      operationId: get-fractionalstill-batch
       responses:
         '200':
           $ref: '#/components/responses/success'
@@ -259,12 +261,12 @@ paths:
       tags:
         - fractional
     delete:
-      summary: Cancel an active fractional still run
-      operationId: cancel-fractionalstill-run
+      summary: Cancel an active fractional still batch
+      operationId: cancel-fractionalstill-batch
       responses:
         '200':
           $ref: '#/components/responses/success'
-      description: Stop an active run
+      description: Stop an active batch
       tags:
         - fractional
   '/fractionalstills/{still_id}/graphdata':
