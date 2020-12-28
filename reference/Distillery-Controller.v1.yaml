@@ -284,47 +284,29 @@ paths:
       description: Get the current still status
     parameters:
       - $ref: '#/components/parameters/still-id'
-  '/fractionalstills/{still-id}/extendarm':
-    get:
-      summary: extend arm
-      tags:
-        - fractional
-        - used
+  '/fractionalstills/{still-id}/arm/{arm-action}':
+    parameters:
+      - schema:
+          type: string
+          enum:
+            - retract
+            - extend
+        name: arm-action
+        in: path
+        required: true
+      - $ref: '#/components/parameters/still-id'
+    put:
+      summary: Move the fractional still arm
+      operationId: perform-arm-action
       responses:
         '200':
           description: OK
-          content:
-            application/json:
-              schema:
-                $ref: ../models/SimpleMessage.v1.yaml
-      operationId: get-extendarm
-      description: something
-    parameters:
-      - $ref: '#/components/parameters/still-id'
-  '/fractionalstills/{still-id}/retractarm':
-    get:
-      summary: retract arm
+      description: Extend or retract the arm
       tags:
         - fractional
-        - used
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: ../models/SimpleMessage.v1.yaml
-              examples:
-                example-1:
-                  value:
-                    message: Operation completed successfully
-      operationId: get-retractarm
-      description: something
-    parameters:
-      - $ref: '#/components/parameters/still-id'
-  /fractionalstills/heat:
+  '/fractionalstills/{still-id}/heat':
     get:
-      summary: turn on head
+      summary: Get heating element status
       tags:
         - fractional
         - unused
@@ -332,20 +314,7 @@ paths:
         '200':
           description: OK
       operationId: get-heat-status
-      description: something
-    parameters:
-      - $ref: '#/components/parameters/still-id'
-  '/fractionalstills/{still-id}/turnoffheat':
-    get:
-      summary: turn off heat
-      tags:
-        - fractional
-        - used
-      responses:
-        '200':
-          description: OK
-      operationId: get-turnoffheat
-      description: something
+      description: Get the status of the heating element
     parameters:
       - $ref: '#/components/parameters/still-id'
   '/fractionalstills/{still-id}/fracchecktemp':
@@ -361,44 +330,31 @@ paths:
       description: something
     parameters:
       - $ref: '#/components/parameters/still-id'
-  '/fractionalstills/{still-id}/openvalve':
-    get:
-      summary: open valve
-      tags:
-        - fractional
-        - used
+  '/fractionalstills/{still-id}/valve/{valve-action}':
+    parameters:
+      - schema:
+          type: string
+        name: still-id
+        in: path
+        required: true
+      - schema:
+          type: string
+          enum:
+            - open
+            - close
+        name: valve-action
+        in: path
+        required: true
+      - $ref: '#/components/parameters/still-id'
+    put:
+      summary: ''
+      operationId: perform-valve-action
       responses:
         '200':
           description: OK
-          content:
-            application/json:
-              schema:
-                $ref: ../models/SimpleMessage.v1.yaml
-              examples:
-                example-1:
-                  value:
-                    message: Operation completed successfully
-      operationId: get-openvalve
-      description: something
-    parameters:
-      - $ref: '#/components/parameters/still-id'
-  '/fractionalstills/{still-id}/closevalve':
-    get:
-      summary: close valve
+      description: Open or close the valve
       tags:
         - fractional
-        - used
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: ../models/SimpleMessage.v1.yaml
-      operationId: get-closevalve
-      description: something
-    parameters:
-      - $ref: '#/components/parameters/still-id'
   '/potstills/{still-id}':
     get:
       summary: Your GET endpoint
@@ -472,6 +428,17 @@ paths:
       description: Set the heating element state
       tags:
         - fractional
+  '/fractionalstills/{still-id}/valve':
+    parameters:
+      - $ref: '#/components/parameters/still-id'
+    get:
+      summary: Get the valve status
+      tags: []
+      responses:
+        '200':
+          $ref: '#/components/responses/success'
+      operationId: get-valve-status
+      description: Get the status of the valve
 components:
   schemas: {}
   securitySchemes:
