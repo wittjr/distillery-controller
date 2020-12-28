@@ -262,18 +262,9 @@ paths:
         - fractional
       parameters:
         - $ref: '#/components/parameters/data-format'
-    delete:
-      summary: Cancel an active fractional still batch
-      operationId: cancel-fractionalstill-batch
-      responses:
-        '200':
-          $ref: '#/components/responses/success'
-      description: Stop an active batch
-      tags:
-        - fractional
   '/fractionalstills/{still-id}':
     get:
-      summary: get fractional summary
+      summary: Get fractional still details
       tags:
         - fractional
         - used
@@ -281,7 +272,7 @@ paths:
         '200':
           description: OK
       operationId: get-fractionalsummary
-      description: Get the current still status
+      description: Get the details for a specified fraction still
     parameters:
       - $ref: '#/components/parameters/still-id'
   '/fractionalstills/{still-id}/arm/{arm-action}':
@@ -319,7 +310,7 @@ paths:
       - $ref: '#/components/parameters/still-id'
   '/fractionalstills/{still-id}/temperature':
     get:
-      summary: Check the still temperature
+      summary: Get the still temperature
       tags:
         - fractional
         - unused
@@ -343,7 +334,7 @@ paths:
         description: 'The action to perform, either open or close'
       - $ref: '#/components/parameters/still-id'
     put:
-      summary: ''
+      summary: Change the valve state
       operationId: perform-valve-action
       responses:
         '200':
@@ -374,7 +365,7 @@ paths:
       description: Retrieve a list of all pot stills
   /fractionalstills:
     get:
-      summary: Your GET endpoint
+      summary: Get all of the fractional stills
       description: List of all fractional stills
       tags: []
       responses:
@@ -402,7 +393,7 @@ paths:
     parameters:
       - $ref: '#/components/parameters/still-id'
     get:
-      summary: Your GET endpoint
+      summary: Get the active batch
       tags: []
       responses:
         '200':
@@ -411,12 +402,19 @@ paths:
       description: Convinence method to get the active batch for a specified fracational still
       parameters:
         - $ref: '#/components/parameters/data-format'
+    delete:
+      summary: Cancel the active batch
+      operationId: cancel-fractional-still-batch
+      responses:
+        '200':
+          description: OK
+      description: Cancel the active fractional still batch
   '/fractionalstills/{still-id}/heat/{new-state}':
     parameters:
       - $ref: '#/components/parameters/still-id'
       - $ref: '#/components/parameters/new-state'
     put:
-      summary: ''
+      summary: Change the heating element state
       operationId: set-heating-element-state
       responses:
         '200':
