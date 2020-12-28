@@ -7,6 +7,8 @@ info:
     url: 'https://jamiewitt.com'
     email: me@jamiewitt.com
   description: A server to control distillery functions using Phidget controllers.x
+  license:
+    name: MIT
 servers:
   - url: 'https://localhost:3000/distillery/v1'
 externalDocs:
@@ -223,20 +225,49 @@ paths:
       description: something
     parameters:
       - $ref: '#/components/parameters/still_id'
-  '/fractionalstills/{still_id}/setfractional':
+  '/fractionalstills/{still_id}/batches/{batch_id}':
     post:
-      summary: set fractional
+      summary: Start a fractional still run
       tags:
         - fractional
         - used
       responses:
         '200':
-          description: OK
-      operationId: post-setfractional
-      description: something
+          $ref: '#/components/responses/success'
+      operationId: create-fractionalstill-run
+      description: Start a still run
     parameters:
+      - schema:
+          type: string
+        name: still_id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: batch_id
+        in: path
+        required: true
       - $ref: '#/components/parameters/still_id'
-  /fractionalstills/{still_id}/graphdata:
+      - $ref: '#/components/parameters/batch_id'
+    get:
+      summary: Get all batches for a still
+      operationId: get-fractionalstill-run
+      responses:
+        '200':
+          $ref: '#/components/responses/success'
+      description: Get the specified batch for the still
+      tags:
+        - fractional
+    delete:
+      summary: Cancel an active fractional still run
+      operationId: cancel-fractionalstill-run
+      responses:
+        '200':
+          $ref: '#/components/responses/success'
+      description: Stop an active run
+      tags:
+        - fractional
+  '/fractionalstills/{still_id}/graphdata':
     get:
       summary: fractional graph data
       tags:
@@ -249,7 +280,7 @@ paths:
       description: something
     parameters:
       - $ref: '#/components/parameters/still_id'
-  /fractionalstills/{still_id}/summary:
+  '/fractionalstills/{still_id}':
     get:
       summary: get fractional summary
       tags:
@@ -259,36 +290,10 @@ paths:
         '200':
           description: OK
       operationId: get-fractionalsummary
-      description: something
+      description: Get the current still status
     parameters:
       - $ref: '#/components/parameters/still_id'
-  '/fractionalstills/{still_id}/startFractionalRun':
-    post:
-      summary: start a new run
-      tags:
-        - fractional
-        - used
-      responses:
-        '200':
-          description: OK
-      operationId: post-startFractionalRun
-      description: something
-    parameters:
-      - $ref: '#/components/parameters/still_id'
-  '/fractionalstills/{still_id}/fractionalStillSummary':
-    get:
-      summary: get fractional still summary
-      tags:
-        - fractional
-        - used
-      responses:
-        '200':
-          description: OK
-      operationId: get-fractionalStillSummary
-      description: something
-    parameters:
-      - $ref: '#/components/parameters/still_id'
-  /fractionalstills/{still_id}/fractionalStillGraphData:
+  '/fractionalstills/{still_id}/fractionalStillGraphData':
     get:
       summary: get still graph data
       tags:
@@ -365,7 +370,7 @@ paths:
       description: something
     parameters:
       - $ref: '#/components/parameters/still_id'
-  /fractionalstills/{still_id}/fracchecktemp:
+  '/fractionalstills/{still_id}/fracchecktemp':
     get:
       summary: temp check
       tags:
@@ -378,7 +383,7 @@ paths:
       description: something
     parameters:
       - $ref: '#/components/parameters/still_id'
-  /fractionalstills/{still_id}/openvalve:
+  '/fractionalstills/{still_id}/openvalve':
     get:
       summary: open valve
       tags:
@@ -399,7 +404,7 @@ paths:
       description: something
     parameters:
       - $ref: '#/components/parameters/still_id'
-  /fractionalstills/{still_id}/closevalve:
+  '/fractionalstills/{still_id}/closevalve':
     get:
       summary: close valve
       tags:
@@ -464,22 +469,13 @@ paths:
           description: 'The type of still to retrieve, it not specified all stills will be returned'
     parameters: []
 components:
-  schemas:
-    batch:
-      title: batch
-      type: object
-      properties:
-        id:
-          type: string
-      x-examples:
-        example-1:
-          id: string
+  schemas: {}
   securitySchemes:
-    API-Key-1:
-      name: API Key
+    x-client-key:
       type: apiKey
       in: header
       description: ''
+      name: Application Client Key
   parameters:
     batch_id:
       name: batch_id

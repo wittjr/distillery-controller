@@ -1,0 +1,33 @@
+title: still
+type: object
+description: Describes a still
+properties:
+  id:
+    type: string
+  type:
+    type: string
+    enum:
+      - fractional
+      - pot
+  status:
+    type: string
+    enum:
+      - free
+      - busy
+  phidgets:
+    type: array
+    items:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+            - temperature-probe
+            - solenoid
+            - arm-extend
+            - heating-element
+required:
+  - id
+  - type
