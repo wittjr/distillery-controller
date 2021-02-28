@@ -271,6 +271,16 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/still.v1.yaml
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '404':
+          $ref: '#/components/responses/general-error'
       operationId: get-fractionalsummary
       description: Get the details for a specified fraction still
     parameters:
@@ -450,6 +460,9 @@ components:
       in: header
       description: ''
       name: Application Client Key
+    token:
+      type: openIdConnect
+      openIdConnectUrl: 'https://localhost:3000/'
   parameters:
     batch-id:
       name: batch-id
@@ -487,9 +500,7 @@ components:
       content:
         application/json:
           schema:
-            properties:
-              id:
-                type: string
+            $ref: ../models/SimpleMessage.v1.yaml
           examples:
             example-1:
               value:
@@ -499,22 +510,24 @@ components:
       content:
         application/json:
           schema:
-            properties:
-              id:
-                type: string
+            $ref: ../models/SimpleMessage.v1.yaml
+          examples:
+            example-1:
+              value:
+                message: Resource not found
     general-error:
       description: Example response
       content:
         application/json:
           schema:
-            properties:
-              id:
-                type: string
+            $ref: ../models/SimpleMessage.v1.yaml
           examples:
             example-1:
               value:
-                id: string
+                message: Something went wrong
         application/xml:
           schema:
             type: object
             properties: {}
+security:
+  - x-client-key: []
