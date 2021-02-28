@@ -82,7 +82,7 @@ paths:
           description: OK
       operationId: get-historicaldata-batch-id
       description: something
-  /history/rundata:
+  /history/batchdata:
     get:
       summary: get run data
       tags:
@@ -94,7 +94,7 @@ paths:
       operationId: get-rundata
       description: something
     parameters: []
-  '/history/rundata/{batch-id}':
+  '/history/batchdata/{batch-id}':
     parameters:
       - schema:
           type: string
@@ -231,22 +231,48 @@ paths:
       tags:
         - fractional
         - used
-      responses:
-        '200':
-          $ref: '#/components/responses/success'
       operationId: create-fractionalstill-batch
       description: Start a still batch
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: ../models/batch.v1.yaml
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ../models/batch.v1.yaml
     parameters:
       - $ref: '#/components/parameters/still-id'
     get:
       summary: Get all batches for a still
       operationId: get-all-fractionalstill-batches
-      responses:
-        '200':
-          $ref: '#/components/responses/success'
       description: Get all batches for a specified fractional still
       tags:
         - fractional
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/batch.v1.yaml
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '404':
+          $ref: '#/components/responses/general-error'
+      parameters: []
   '/fractionalstills/{still-id}/batches/{batch-id}':
     parameters:
       - $ref: '#/components/parameters/still-id'
@@ -500,7 +526,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: ../models/SimpleMessage.v1.yaml
+            $ref: ../models/simple-message.v1.yaml
           examples:
             example-1:
               value:
@@ -510,7 +536,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: ../models/SimpleMessage.v1.yaml
+            $ref: ../models/simple-message.v1.yaml
           examples:
             example-1:
               value:
@@ -520,7 +546,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: ../models/SimpleMessage.v1.yaml
+            $ref: ../models/simple-message.v1.yaml
           examples:
             example-1:
               value:

@@ -1,0 +1,5 @@
+title: phidget-temperature
+type: object
+properties:
+  id:
+    type: string
