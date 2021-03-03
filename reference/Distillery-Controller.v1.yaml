@@ -52,75 +52,83 @@ paths:
       description: something
     parameters:
       - $ref: '#/components/parameters/still-id'
-  /history/historicaldata:
+  /batches:
     get:
-      summary: get historical data
+      summary: Get data for all batches
       tags:
         - history
-        - used
       responses:
         '200':
           description: OK
-      operationId: get-historicaldata
-      description: something
-    parameters: []
-  '/history/historicaldata/{batch-id}':
-    parameters:
-      - schema:
-          type: string
-        name: batch-id
-        in: path
-        required: true
-        description: The ID of the batch to retrieve
-    get:
-      summary: get historical data by id
-      tags:
-        - history
-        - used
-      responses:
-        '200':
-          description: OK
-      operationId: get-historicaldata-batch-id
-      description: something
-  /history/batchdata:
-    get:
-      summary: get run data
-      tags:
-        - history
-        - used
-      responses:
-        '200':
-          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/batch-header.v1.yaml
+        '401':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
       operationId: get-rundata
-      description: something
+      description: Get data for all batches
     parameters: []
-  '/history/batchdata/{batch-id}':
+  '/batches/{batch-id}':
     parameters:
-      - schema:
-          type: string
-        name: batch-id
-        in: path
-        required: true
+      - $ref: '#/components/parameters/batch-id'
     get:
-      summary: get run data by id
+      summary: Get data for a specific batch
       tags:
         - history
-        - unused
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/batch.v1.yaml
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '404':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
       operationId: get-rundata-batch-id
-      description: something
-    post:
-      summary: update run data by id
-      tags:
-        - history
-        - used
+      description: Get data for a specific batch
+      parameters:
+        - schema:
+            type: boolean
+          in: query
+          name: graph-data
+          description: Return graph data
+    put:
+      summary: Update batch info
+      operationId: put-batches-batch-id
       responses:
         '200':
           description: OK
-      operationId: post-rundata-batch-id
-      description: something
+          content:
+            application/json:
+              schema:
+                $ref: ../models/batch.v1.yaml
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '403':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
+      description: Update batch info
+      tags:
+        - history
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ../models/batch.v1.yaml
   '/potstills/{still-id}/getpotcolumntemperature':
     get:
       summary: get pot temperature
@@ -230,7 +238,6 @@ paths:
       summary: Start a fractional still batch
       tags:
         - fractional
-        - used
       operationId: create-fractionalstill-batch
       description: Start a still batch
       responses:
@@ -272,6 +279,8 @@ paths:
           $ref: '#/components/responses/general-error'
         '404':
           $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
       parameters: []
   '/fractionalstills/{still-id}/batches/{batch-id}':
     parameters:
@@ -280,20 +289,31 @@ paths:
     get:
       summary: Get a specific batch for a still
       operationId: get-fractionalstill-batch
-      responses:
-        '200':
-          $ref: '#/components/responses/success'
       description: Get the specified batch for the specified fractional still
       tags:
         - fractional
       parameters:
         - $ref: '#/components/parameters/data-format'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/batch.v1.yaml
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '404':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
   '/fractionalstills/{still-id}':
     get:
       summary: Get fractional still details
       tags:
         - fractional
-        - used
       responses:
         '200':
           description: OK
@@ -307,20 +327,14 @@ paths:
           $ref: '#/components/responses/general-error'
         '404':
           $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
       operationId: get-fractionalsummary
       description: Get the details for a specified fraction still
     parameters:
       - $ref: '#/components/parameters/still-id'
-  '/fractionalstills/{still-id}/arm/{arm-action}':
+  '/fractionalstills/{still-id}/arm':
     parameters:
-      - schema:
-          type: string
-          enum:
-            - retract
-            - extend
-        name: arm-action
-        in: path
-        required: true
       - $ref: '#/components/parameters/still-id'
     put:
       summary: Move the fractional still arm
@@ -328,54 +342,148 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/phidget-generic.v1.yaml
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '404':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
       description: Extend or retract the arm
+      tags:
+        - fractional
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ../models/phidget-generic.v1.yaml
+        description: ''
+    get:
+      summary: Get the state of the fractional still arm
+      operationId: get-fractionalstills-still-id-arm
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/phidget-generic.v1.yaml
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '404':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
+      description: Get the state of the arm
       tags:
         - fractional
   '/fractionalstills/{still-id}/heat':
     get:
-      summary: Get heating element status
+      summary: get_temperature
       tags:
         - fractional
-        - unused
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/phidget-temperature.v1.yaml
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '404':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
       operationId: get-heat-status
       description: Get the status of the heating element
     parameters:
       - $ref: '#/components/parameters/still-id'
-  '/fractionalstills/{still-id}/temperature':
-    get:
-      summary: Get the still temperature
-      tags:
-        - fractional
-        - unused
+    put:
+      summary: update_heat_status
+      operationId: put-fractionalstills-still-id-heat
       responses:
         '200':
           description: OK
-      operationId: get-temperature
-      description: Get the current still temperature
+          content:
+            application/json:
+              schema:
+                $ref: ../models/phidget-generic.v1.yaml
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '404':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ../models/phidget-generic.v1.yaml
+        description: ''
+      description: Turn the heat on or off
+      tags:
+        - fractional
+  '/fractionalstills/{still-id}/valve':
     parameters:
-      - $ref: '#/components/parameters/still-id'
-  '/fractionalstills/{still-id}/valve/{valve-action}':
-    parameters:
-      - schema:
-          type: string
-          enum:
-            - open
-            - close
-        name: valve-action
-        in: path
-        required: true
-        description: 'The action to perform, either open or close'
       - $ref: '#/components/parameters/still-id'
     put:
-      summary: Change the valve state
+      summary: update_valve_state
       operationId: perform-valve-action
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/phidget-generic.v1.yaml
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '404':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
       description: Open or close the valve
+      tags:
+        - fractional
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ../models/phidget-generic.v1.yaml
+        description: ''
+    get:
+      summary: Get the valve status
+      operationId: get-fractionalstills-still-id-valve
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/phidget-generic.v1.yaml
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '404':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
+      description: Get the status of the valve
       tags:
         - fractional
   '/potstills/{still-id}':
@@ -403,15 +511,55 @@ paths:
       description: Retrieve a list of all pot stills
   /fractionalstills:
     get:
-      summary: Get all of the fractional stills
+      summary: list_fractional_stills
       description: List of all fractional stills
       tags:
         - fractional
       responses:
         '200':
-          $ref: '#/components/responses/success'
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/still.v1.yaml
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '404':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
       operationId: get-fractionals
     parameters: []
+    post:
+      summary: create_fractional_still
+      operationId: post-fractionalstills
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: ../models/still.v1.yaml
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '403':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
+      description: Create a fractional still
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ../models/still.v1.yaml
+      tags:
+        - fractional
   /stills:
     get:
       summary: Get all stills
@@ -420,7 +568,21 @@ paths:
         - pot
       responses:
         '200':
-          $ref: '#/components/responses/success'
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/still.v1.yaml
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
       operationId: get-stills
       description: List all of the available stills
       parameters:
@@ -430,6 +592,33 @@ paths:
           name: type
           description: 'The type of still to retrieve, it not specified all stills will be returned'
     parameters: []
+    post:
+      summary: Create a still
+      operationId: post-stills
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/still.v1.yaml
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '403':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
+      description: Create a still
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ../models/still.v1.yaml
+      tags:
+        - fractional
+        - pot
   '/fractionalstills/{still-id}/batches/active':
     parameters:
       - $ref: '#/components/parameters/still-id'
@@ -439,7 +628,19 @@ paths:
         - fractional
       responses:
         '200':
-          $ref: '#/components/responses/success'
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/batch.v1.yaml
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '404':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
       operationId: get-active-fractionalstill-batch
       description: Convinence method to get the active batch for a specified fracational still
       parameters:
@@ -448,36 +649,21 @@ paths:
       summary: Cancel the active batch
       operationId: cancel-fractional-still-batch
       responses:
-        '200':
-          description: OK
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '403':
+          $ref: '#/components/responses/general-error'
+        '404':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
       description: Cancel the active fractional still batch
       tags:
         - fractional
-  '/fractionalstills/{still-id}/heat/{new-state}':
-    parameters:
-      - $ref: '#/components/parameters/still-id'
-      - $ref: '#/components/parameters/new-state'
-    put:
-      summary: Change the heating element state
-      operationId: set-heating-element-state
-      responses:
-        '200':
-          $ref: '#/components/responses/success'
-      description: Set the heating element state
-      tags:
-        - fractional
-  '/fractionalstills/{still-id}/valve':
-    parameters:
-      - $ref: '#/components/parameters/still-id'
-    get:
-      summary: Get the valve status
-      tags:
-        - fractional
-      responses:
-        '200':
-          $ref: '#/components/responses/success'
-      operationId: get-valve-status
-      description: Get the status of the valve
 components:
   schemas: {}
   securitySchemes:
@@ -530,7 +716,7 @@ components:
           examples:
             example-1:
               value:
-                id: string
+                message: string
     not-found:
       description: Example response
       content:
