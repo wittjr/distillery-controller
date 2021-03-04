@@ -21,24 +21,7 @@ tags:
     description: Pot still related operations
   - name: history
     description: Historical data related operations
-  - name: used
-    description: Used operations
-  - name: unused
-    description: Unused operations
 paths:
-  '/potsills/{still-id}/potgraphdata':
-    get:
-      summary: get pot graph data
-      tags:
-        - pot
-        - used
-      responses:
-        '200':
-          description: OK
-      operationId: get-potgraphdata
-      description: something
-    parameters:
-      - $ref: '#/components/parameters/still-id'
   /batches:
     get:
       summary: Get data for all batches
@@ -116,32 +99,6 @@ paths:
           application/json:
             schema:
               $ref: ../models/fractional-batch.v1.yaml
-  '/potstills/{still-id}/startpottemperaturelogging':
-    get:
-      summary: start pot temp logging
-      tags:
-        - pot
-        - unused
-      responses:
-        '200':
-          description: OK
-      operationId: get-startpottemperaturelogging
-      description: something
-    parameters:
-      - $ref: '#/components/parameters/still-id'
-  '/potstills/{still-id}/stoppottemperaturelogging':
-    get:
-      summary: stop pot temp logging
-      tags:
-        - pot
-        - unused
-      responses:
-        '200':
-          description: OK
-      operationId: get-stoppottemperaturelogging
-      description: something
-    parameters:
-      - $ref: '#/components/parameters/still-id'
   '/potstills/{still-id}/heat':
     get:
       summary: Get heat status
@@ -203,6 +160,33 @@ paths:
           name: high-voltage
           description: Operate on the high voltage or normal heating element
   '/potstills/{still-id}/batches':
+    get:
+      summary: Get all pot batch data
+      tags:
+        - pot
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/pot-batch-header.v1.yaml
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/general-error'
+        '403':
+          $ref: '#/components/responses/general-error'
+        '404':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
+      operationId: get-potgraphdata
+      description: Get all pot batch data
+      parameters:
+        - $ref: '#/components/parameters/data-format'
     post:
       summary: Start a pot batch
       tags:
@@ -234,6 +218,78 @@ paths:
           $ref: '#/components/responses/general-error'
     parameters:
       - $ref: '#/components/parameters/still-id'
+  '/potstills/{still-id}/batches/{batch-id}':
+    parameters:
+      - $ref: '#/components/parameters/still-id'
+      - $ref: '#/components/parameters/batch-id'
+    get:
+      summary: Get a specific batch for a still
+      operationId: get-potstill-batch
+      description: Get the specified batch for the specified pot still
+      tags:
+        - pot
+      parameters:
+        - $ref: '#/components/parameters/data-format'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/pot-batch.v1.yaml
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '404':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
+  '/potstills/{still-id}/batches/active':
+    parameters:
+      - $ref: '#/components/parameters/still-id'
+    get:
+      summary: Get the active batch
+      tags:
+        - pot
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/pot-batch.v1.yaml
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '404':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
+      operationId: get-active-potstill-batch
+      description: Convinence method to get the active batch for a specified pot still
+      parameters:
+        - $ref: '#/components/parameters/data-format'
+    delete:
+      summary: Cancel the active batch
+      operationId: cancel-pot-still-batch
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '403':
+          $ref: '#/components/responses/general-error'
+        '404':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
+      description: Cancel the active pot still batch
+      tags:
+        - fractional
   '/fractionalstills/{still-id}/batches':
     post:
       summary: Start a fractional still batch
