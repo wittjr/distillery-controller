@@ -1,0 +1,5 @@
+title: fractional-still
+type: object
+properties:
+  id:
+    type: string

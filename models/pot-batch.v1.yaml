@@ -1,0 +1,5 @@
+title: pot-batch
+type: object
+properties:
+  id:
+    type: string

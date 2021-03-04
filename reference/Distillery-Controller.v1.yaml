@@ -26,19 +26,6 @@ tags:
   - name: unused
     description: Unused operations
 paths:
-  '/potstills/{still-id}/potsummary':
-    get:
-      summary: Your GET endpoint
-      tags:
-        - pot
-        - used
-      responses:
-        '200':
-          description: OK
-      operationId: get-distillery-v1-potsummary
-      description: Get the summary for the pot
-    parameters:
-      - $ref: '#/components/parameters/still-id'
   '/potsills/{still-id}/potgraphdata':
     get:
       summary: get pot graph data
@@ -65,7 +52,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: ../models/batch-header.v1.yaml
+                  $ref: ../models/fractional-batch-header.v1.yaml
         '401':
           $ref: '#/components/responses/general-error'
         '500':
@@ -86,7 +73,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ../models/batch.v1.yaml
+                $ref: ../models/fractional-batch.v1.yaml
         '400':
           $ref: '#/components/responses/general-error'
         '401':
@@ -112,7 +99,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ../models/batch.v1.yaml
+                $ref: ../models/fractional-batch.v1.yaml
         '400':
           $ref: '#/components/responses/general-error'
         '401':
@@ -128,20 +115,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: ../models/batch.v1.yaml
-  '/potstills/{still-id}/getpotcolumntemperature':
-    get:
-      summary: get pot temperature
-      tags:
-        - pot
-        - unused
-      responses:
-        '200':
-          description: OK
-      operationId: get-getpotcolumntemperature
-      description: something
-    parameters:
-      - $ref: '#/components/parameters/still-id'
+              $ref: ../models/fractional-batch.v1.yaml
   '/potstills/{still-id}/startpottemperaturelogging':
     get:
       summary: start pot temp logging
@@ -168,69 +142,96 @@ paths:
       description: something
     parameters:
       - $ref: '#/components/parameters/still-id'
-  '/potstills/{still-id}/potheaton':
+  '/potstills/{still-id}/heat':
     get:
-      summary: pot heat on
+      summary: Get heat status
       tags:
         - pot
-        - unused
-      responses:
-        '200':
-          description: OK
-      operationId: get-potheaton
-      description: something
-    parameters:
-      - $ref: '#/components/parameters/still-id'
-  '/potstills/{still-id}/pothighvoltageheaton':
-    get:
-      summary: pot high voltage
-      tags:
-        - pot
-        - unused
-      responses:
-        '200':
-          description: OK
-      operationId: get-pothighvoltageheaton
-      description: something
-    parameters:
-      - $ref: '#/components/parameters/still-id'
-  '/potstills/{still-id}/potheatoff':
-    get:
-      summary: turn off pot heat
-      tags:
-        - pot
-        - unused
-      responses:
-        '200':
-          description: OK
       operationId: get-potheatoff
-      description: something
-    parameters:
-      - $ref: '#/components/parameters/still-id'
-  '/potstills/{still-id}/resetpotafterginrun':
-    get:
-      summary: reset pot
-      tags:
-        - pot
-        - unused
+      description: Get heat status
       responses:
         '200':
           description: OK
-      operationId: get-resetpotafterginrun
-      description: something
+          content:
+            application/json:
+              schema:
+                $ref: ../models/phidget-temperature.v1.yaml
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '403':
+          $ref: '#/components/responses/general-error'
+        '404':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
     parameters:
       - $ref: '#/components/parameters/still-id'
-  '/potstills/{still-id}/setpot':
+    put:
+      summary: Turn the heat on or off
+      operationId: post-potstills-still-id-heat
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/phidget-generic.v1.yaml
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '403':
+          $ref: '#/components/responses/general-error'
+        '404':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
+      tags:
+        - pot
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ../models/phidget-generic.v1.yaml
+      description: Turn the heat on or off
+      parameters:
+        - schema:
+            type: boolean
+          in: query
+          name: high-voltage
+          description: Operate on the high voltage or normal heating element
+  '/potstills/{still-id}/batches':
     post:
-      summary: set pot
+      summary: Start a pot batch
       tags:
         - pot
-        - used
-      responses:
-        '200':
-          description: OK
       operationId: post-setpot
-      description: something
+      description: Start a pot batch
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ../models/pot-batch.v1.yaml
+        description: ''
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: ../models/pot-batch.v1.yaml
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '403':
+          $ref: '#/components/responses/general-error'
+        '404':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
     parameters:
       - $ref: '#/components/parameters/still-id'
   '/fractionalstills/{still-id}/batches':
@@ -246,7 +247,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ../models/batch.v1.yaml
+                $ref: ../models/fractional-batch.v1.yaml
         '400':
           $ref: '#/components/responses/general-error'
         '401':
@@ -255,7 +256,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: ../models/batch.v1.yaml
+              $ref: ../models/fractional-batch.v1.yaml
     parameters:
       - $ref: '#/components/parameters/still-id'
     get:
@@ -272,7 +273,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: ../models/batch.v1.yaml
+                  $ref: ../models/fractional-batch.v1.yaml
         '400':
           $ref: '#/components/responses/general-error'
         '401':
@@ -300,7 +301,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ../models/batch.v1.yaml
+                $ref: ../models/fractional-batch.v1.yaml
         '400':
           $ref: '#/components/responses/general-error'
         '401':
@@ -320,7 +321,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ../models/still.v1.yaml
+                $ref: ../models/fractional-still.v1.yaml
         '400':
           $ref: '#/components/responses/general-error'
         '401':
@@ -409,8 +410,8 @@ paths:
     parameters:
       - $ref: '#/components/parameters/still-id'
     put:
-      summary: update_heat_status
-      operationId: put-fractionalstills-still-id-heat
+      summary: Turn the heat on or off
+      operationId: post-fractionalstills-still-id-heat
       responses:
         '200':
           description: OK
@@ -422,19 +423,20 @@ paths:
           $ref: '#/components/responses/general-error'
         '401':
           $ref: '#/components/responses/general-error'
+        '403':
+          $ref: '#/components/responses/general-error'
         '404':
           $ref: '#/components/responses/general-error'
         '500':
           $ref: '#/components/responses/general-error'
+      description: Turn the heat on or off
+      tags:
+        - fractional
       requestBody:
         content:
           application/json:
             schema:
               $ref: ../models/phidget-generic.v1.yaml
-        description: ''
-      description: Turn the heat on or off
-      tags:
-        - fractional
   '/fractionalstills/{still-id}/valve':
     parameters:
       - $ref: '#/components/parameters/still-id'
@@ -491,24 +493,104 @@ paths:
       summary: Your GET endpoint
       tags:
         - pot
-      responses:
-        '200':
-          $ref: '#/components/responses/success'
       operationId: get-pot
       description: Get the details of a pot still
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/pot-still.v1.yaml
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '404':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
     parameters:
       - $ref: '#/components/parameters/still-id'
+    patch:
+      summary: Update pot status
+      operationId: patch-potstills-still-id
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/pot-still.v1.yaml
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '403':
+          $ref: '#/components/responses/general-error'
+        '404':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
+      description: Update pot status
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ../models/pot-still.v1.yaml
+        description: ''
+      tags:
+        - pot
   /potstills:
     parameters: []
     get:
-      summary: Your GET endpoint
+      summary: Get all pot stills
       tags:
         - pot
-      responses:
-        '200':
-          $ref: '#/components/responses/success'
       operationId: get-pots-pot_id
       description: Retrieve a list of all pot stills
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/pot-still.v1.yaml
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '500':
+          $ref: '#/components/responses/general-error'
+    post:
+      summary: Create a pot still
+      operationId: post-potstills
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: ../models/pot-still.v1.yaml
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '403':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
+      tags:
+        - pot
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ../models/pot-still.v1.yaml
+        description: ''
+      description: Create a pot still
   /fractionalstills:
     get:
       summary: list_fractional_stills
@@ -523,12 +605,10 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: ../models/still.v1.yaml
-        '400':
-          $ref: '#/components/responses/general-error'
+                  $ref: ../models/fractional-still.v1.yaml
+        '204':
+          description: No Content
         '401':
-          $ref: '#/components/responses/general-error'
-        '404':
           $ref: '#/components/responses/general-error'
         '500':
           $ref: '#/components/responses/general-error'
@@ -543,7 +623,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ../models/still.v1.yaml
+                $ref: ../models/fractional-still.v1.yaml
         '400':
           $ref: '#/components/responses/general-error'
         '401':
@@ -557,7 +637,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: ../models/still.v1.yaml
+              $ref: ../models/fractional-still.v1.yaml
       tags:
         - fractional
   /stills:
@@ -592,33 +672,6 @@ paths:
           name: type
           description: 'The type of still to retrieve, it not specified all stills will be returned'
     parameters: []
-    post:
-      summary: Create a still
-      operationId: post-stills
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: ../models/still.v1.yaml
-        '400':
-          $ref: '#/components/responses/general-error'
-        '401':
-          $ref: '#/components/responses/general-error'
-        '403':
-          $ref: '#/components/responses/general-error'
-        '500':
-          $ref: '#/components/responses/general-error'
-      description: Create a still
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: ../models/still.v1.yaml
-      tags:
-        - fractional
-        - pot
   '/fractionalstills/{still-id}/batches/active':
     parameters:
       - $ref: '#/components/parameters/still-id'
@@ -632,7 +685,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ../models/batch.v1.yaml
+                $ref: ../models/fractional-batch.v1.yaml
         '400':
           $ref: '#/components/responses/general-error'
         '401':

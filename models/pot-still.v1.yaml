@@ -1,0 +1,5 @@
+title: pot-still
+type: object
+properties:
+  id:
+    type: string

@@ -1,0 +1,5 @@
+title: pot-batch-header
+type: object
+properties:
+  id:
+    type: string
