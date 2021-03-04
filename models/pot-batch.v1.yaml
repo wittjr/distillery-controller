@@ -3,3 +3,42 @@ type: object
 properties:
   id:
     type: string
+  type:
+    type: string
+    enum:
+      - gin
+      - stripping
+  max-time:
+    type: integer
+  volume-hearts:
+    type: number
+  alcohol-percent:
+    type: number
+  ingredients:
+    type: array
+    items:
+      type: object
+      properties:
+        name:
+          type: string
+        amount:
+          type: number
+  start-time:
+    type: number
+  end-time:
+    type: number
+required:
+  - type
+  - max-time
+x-examples:
+  example-1:
+    id: string
+    type: gin
+    max-time: 0
+    volume-hearts: 0
+    alcohol-percent: 0
+    ingredients:
+      - name: string
+        amount: 0
+    start-time: 0
+    end-time: 0

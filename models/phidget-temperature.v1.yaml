@@ -1,5 +1,7 @@
 title: phidget-temperature
 type: object
 properties:
-  id:
-    type: string
+  state:
+    type: boolean
+  temperature:
+    type: number

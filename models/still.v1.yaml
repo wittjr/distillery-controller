@@ -28,6 +28,12 @@ properties:
             - solenoid
             - arm-extend
             - heating-element
+            - high-voltage-heating-element
+        state:
+          type:
+            - boolean
+            - 'null'
+            - number
 required:
   - id
   - type

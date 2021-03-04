@@ -1,5 +1,27 @@
-title: batch
+title: fractional-batch
 type: object
 properties:
   id:
     type: string
+  preheat-temperature:
+    type: number
+  preheat-time:
+    type: integer
+  heads-temp:
+    type: number
+  heads-time:
+    type: number
+  hearts-temp:
+    type: number
+  hearts-time:
+    type: number
+  tails-temp:
+    type: number
+  tails-time:
+    type: number
+  type:
+    type: string
+  start-time:
+    type: number
+  end-time:
+    type: number

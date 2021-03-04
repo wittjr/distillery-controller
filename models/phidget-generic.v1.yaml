@@ -1,5 +1,10 @@
 title: phidget
 type: object
+x-examples:
+  example-1:
+    state: true
 properties:
   state:
     type: boolean
+required:
+  - state

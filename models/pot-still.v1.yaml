@@ -1,5 +1,16 @@
-title: pot-still
 type: object
+description: ''
+x-examples:
+  example-1:
+    still:
+      id: string
+      type: fractional
+      status: free
+      phidgets:
+        - name: string
+          type: temperature-probe
 properties:
-  id:
-    type: string
+  still:
+    $ref: ./still.v1.yaml
+  stipping-run-required:
+    type: boolean
