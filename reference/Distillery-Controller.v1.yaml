@@ -43,9 +43,9 @@ paths:
       operationId: get-rundata
       description: Get data for all batches
     parameters: []
-  '/batches/{batch-id}':
+  '/batches/{batchId}':
     parameters:
-      - $ref: '#/components/parameters/batch-id'
+      - $ref: '#/components/parameters/batchId'
     get:
       summary: Get data for a specific batch
       tags:
@@ -71,7 +71,7 @@ paths:
         - schema:
             type: boolean
           in: query
-          name: graph-data
+          name: graphData
           description: Return graph data
     put:
       summary: Update batch info
@@ -99,7 +99,7 @@ paths:
           application/json:
             schema:
               $ref: ../models/fractional-batch.v1.yaml
-  '/potstills/{still-id}/heat':
+  '/potstills/{stillId}/heat':
     get:
       summary: Get heat status
       tags:
@@ -124,7 +124,7 @@ paths:
         '500':
           $ref: '#/components/responses/general-error'
     parameters:
-      - $ref: '#/components/parameters/still-id'
+      - $ref: '#/components/parameters/stillId'
     put:
       summary: Turn the heat on or off
       operationId: post-potstills-still-id-heat
@@ -157,9 +157,9 @@ paths:
         - schema:
             type: boolean
           in: query
-          name: high-voltage
+          name: highVoltage
           description: Operate on the high voltage or normal heating element
-  '/potstills/{still-id}/batches':
+  '/potstills/{stillId}/batches':
     get:
       summary: Get all pot batch data
       tags:
@@ -186,7 +186,7 @@ paths:
       operationId: get-potgraphdata
       description: Get all pot batch data
       parameters:
-        - $ref: '#/components/parameters/data-format'
+        - $ref: '#/components/parameters/dataFormat'
     post:
       summary: Start a pot batch
       tags:
@@ -217,11 +217,11 @@ paths:
         '500':
           $ref: '#/components/responses/general-error'
     parameters:
-      - $ref: '#/components/parameters/still-id'
-  '/potstills/{still-id}/batches/{batch-id}':
+      - $ref: '#/components/parameters/stillId'
+  '/potstills/{stillId}/batches/{batchId}':
     parameters:
-      - $ref: '#/components/parameters/still-id'
-      - $ref: '#/components/parameters/batch-id'
+      - $ref: '#/components/parameters/stillId'
+      - $ref: '#/components/parameters/batchId'
     get:
       summary: Get a specific batch for a still
       operationId: get-potstill-batch
@@ -229,7 +229,7 @@ paths:
       tags:
         - pot
       parameters:
-        - $ref: '#/components/parameters/data-format'
+        - $ref: '#/components/parameters/dataFormat'
       responses:
         '200':
           description: OK
@@ -245,9 +245,9 @@ paths:
           $ref: '#/components/responses/general-error'
         '500':
           $ref: '#/components/responses/general-error'
-  '/potstills/{still-id}/batches/active':
+  '/potstills/{stillId}/batches/active':
     parameters:
-      - $ref: '#/components/parameters/still-id'
+      - $ref: '#/components/parameters/stillId'
     get:
       summary: Get the active batch
       tags:
@@ -270,7 +270,7 @@ paths:
       operationId: get-active-potstill-batch
       description: Convinence method to get the active batch for a specified pot still
       parameters:
-        - $ref: '#/components/parameters/data-format'
+        - $ref: '#/components/parameters/dataFormat'
     delete:
       summary: Cancel the active batch
       operationId: cancel-pot-still-batch
@@ -290,7 +290,7 @@ paths:
       description: Cancel the active pot still batch
       tags:
         - fractional
-  '/fractionalstills/{still-id}/batches':
+  '/fractionalstills/{stillId}/batches':
     post:
       summary: Start a fractional still batch
       tags:
@@ -314,7 +314,7 @@ paths:
             schema:
               $ref: ../models/fractional-batch.v1.yaml
     parameters:
-      - $ref: '#/components/parameters/still-id'
+      - $ref: '#/components/parameters/stillId'
     get:
       summary: Get all batches for a still
       operationId: get-all-fractionalstill-batches
@@ -339,10 +339,10 @@ paths:
         '500':
           $ref: '#/components/responses/general-error'
       parameters: []
-  '/fractionalstills/{still-id}/batches/{batch-id}':
+  '/fractionalstills/{stillId}/batches/{batchId}':
     parameters:
-      - $ref: '#/components/parameters/still-id'
-      - $ref: '#/components/parameters/batch-id'
+      - $ref: '#/components/parameters/stillId'
+      - $ref: '#/components/parameters/batchId'
     get:
       summary: Get a specific batch for a still
       operationId: get-fractionalstill-batch
@@ -350,7 +350,7 @@ paths:
       tags:
         - fractional
       parameters:
-        - $ref: '#/components/parameters/data-format'
+        - $ref: '#/components/parameters/dataFormat'
       responses:
         '200':
           description: OK
@@ -366,7 +366,7 @@ paths:
           $ref: '#/components/responses/general-error'
         '500':
           $ref: '#/components/responses/general-error'
-  '/fractionalstills/{still-id}':
+  '/fractionalstills/{stillId}':
     get:
       summary: Get fractional still details
       tags:
@@ -389,10 +389,10 @@ paths:
       operationId: get-fractionalsummary
       description: Get the details for a specified fraction still
     parameters:
-      - $ref: '#/components/parameters/still-id'
-  '/fractionalstills/{still-id}/arm':
+      - $ref: '#/components/parameters/stillId'
+  '/fractionalstills/{stillId}/arm':
     parameters:
-      - $ref: '#/components/parameters/still-id'
+      - $ref: '#/components/parameters/stillId'
     put:
       summary: Move the fractional still arm
       operationId: perform-arm-action
@@ -441,7 +441,7 @@ paths:
       description: Get the state of the arm
       tags:
         - fractional
-  '/fractionalstills/{still-id}/heat':
+  '/fractionalstills/{stillId}/heat':
     get:
       summary: get_temperature
       tags:
@@ -464,7 +464,7 @@ paths:
       operationId: get-heat-status
       description: Get the status of the heating element
     parameters:
-      - $ref: '#/components/parameters/still-id'
+      - $ref: '#/components/parameters/stillId'
     put:
       summary: Turn the heat on or off
       operationId: post-fractionalstills-still-id-heat
@@ -493,9 +493,9 @@ paths:
           application/json:
             schema:
               $ref: ../models/phidget-generic.v1.yaml
-  '/fractionalstills/{still-id}/valve':
+  '/fractionalstills/{stillId}/valve':
     parameters:
-      - $ref: '#/components/parameters/still-id'
+      - $ref: '#/components/parameters/stillId'
     put:
       summary: update_valve_state
       operationId: perform-valve-action
@@ -544,7 +544,7 @@ paths:
       description: Get the status of the valve
       tags:
         - fractional
-  '/potstills/{still-id}':
+  '/potstills/{stillId}':
     get:
       summary: Your GET endpoint
       tags:
@@ -567,7 +567,7 @@ paths:
         '500':
           $ref: '#/components/responses/general-error'
     parameters:
-      - $ref: '#/components/parameters/still-id'
+      - $ref: '#/components/parameters/stillId'
     patch:
       summary: Update pot status
       operationId: patch-potstills-still-id
@@ -728,9 +728,9 @@ paths:
           name: type
           description: 'The type of still to retrieve, it not specified all stills will be returned'
     parameters: []
-  '/fractionalstills/{still-id}/batches/active':
+  '/fractionalstills/{stillId}/batches/active':
     parameters:
-      - $ref: '#/components/parameters/still-id'
+      - $ref: '#/components/parameters/stillId'
     get:
       summary: Get the active batch
       tags:
@@ -753,7 +753,7 @@ paths:
       operationId: get-active-fractionalstill-batch
       description: Convinence method to get the active batch for a specified fracational still
       parameters:
-        - $ref: '#/components/parameters/data-format'
+        - $ref: '#/components/parameters/dataFormat'
     delete:
       summary: Cancel the active batch
       operationId: cancel-fractional-still-batch
@@ -785,22 +785,22 @@ components:
       type: openIdConnect
       openIdConnectUrl: 'https://localhost:3000/'
   parameters:
-    batch-id:
-      name: batch-id
+    batchId:
+      name: batchId
       in: path
       required: true
       schema:
         type: string
       description: The ID of the batch run
-    still-id:
-      name: still-id
+    stillId:
+      name: stillId
       in: path
       required: true
       schema:
         type: string
       description: The ID of the still on which to operate
-    data-format:
-      name: data-format
+    dataFormat:
+      name: dataFormat
       in: query
       required: false
       schema:
@@ -808,8 +808,8 @@ components:
         enum:
           - graph
       description: The format to return the data
-    new-state:
-      name: new-state
+    newState:
+      name: newState
       in: path
       required: true
       schema:
