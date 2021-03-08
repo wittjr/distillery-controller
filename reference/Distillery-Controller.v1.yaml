@@ -728,6 +728,33 @@ paths:
           name: type
           description: 'The type of still to retrieve, it not specified all stills will be returned'
     parameters: []
+    post:
+      summary: Create a still
+      operationId: post-stills
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: ../models/still.v1.yaml
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '403':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
+      description: Create a still
+      tags:
+        - pot
+        - fractional
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ../models/still.v1.yaml
   '/fractionalstills/{stillId}/batches/active':
     parameters:
       - $ref: '#/components/parameters/stillId'
@@ -773,6 +800,30 @@ paths:
       description: Cancel the active fractional still batch
       tags:
         - fractional
+  '/stills/:stillId':
+    get:
+      summary: Get a still
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/still.v1.yaml
+        '401':
+          $ref: '#/components/responses/general-error'
+        '403':
+          $ref: '#/components/responses/general-error'
+        '404':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
+      operationId: 'get-stills-:stillId'
+      description: Get a still
+      parameters: []
+      tags:
+        - fractional
+        - pot
 components:
   schemas: {}
   securitySchemes:
