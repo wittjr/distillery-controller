@@ -859,34 +859,7 @@ components:
         enum:
           - graph
       description: The format to return the data
-    newState:
-      name: newState
-      in: path
-      required: true
-      schema:
-        type: boolean
-      description: The desired phidget state
   responses:
-    success:
-      description: Example response
-      content:
-        application/json:
-          schema:
-            $ref: ../models/simple-message.v1.yaml
-          examples:
-            example-1:
-              value:
-                message: string
-    not-found:
-      description: Example response
-      content:
-        application/json:
-          schema:
-            $ref: ../models/simple-message.v1.yaml
-          examples:
-            example-1:
-              value:
-                message: Resource not found
     general-error:
       description: Example response
       content:
