@@ -82,7 +82,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ../models/fractional-batch.v1.yaml
+                $ref: '#/components/schemas/fractional-batch'
         '400':
           $ref: '#/components/responses/general-error'
         '401':
@@ -98,7 +98,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: ../models/fractional-batch.v1.yaml
+              $ref: '#/components/schemas/fractional-batch'
   '/potstills/{stillId}/heat':
     get:
       summary: Get heat status
@@ -134,7 +134,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ../models/phidget-generic.v1.yaml
+                $ref: '#/components/schemas/phidget-generic'
         '400':
           $ref: '#/components/responses/general-error'
         '401':
@@ -151,7 +151,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: ../models/phidget-generic.v1.yaml
+              $ref: '#/components/schemas/phidget-generic'
       description: Turn the heat on or off
       parameters:
         - schema:
@@ -197,7 +197,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: ../models/pot-batch.v1.yaml
+              $ref: '#/components/schemas/pot-batch'
         description: ''
       responses:
         '201':
@@ -205,7 +205,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ../models/pot-batch.v1.yaml
+                $ref: '#/components/schemas/pot-batch'
         '400':
           $ref: '#/components/responses/general-error'
         '401':
@@ -303,7 +303,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ../models/fractional-batch.v1.yaml
+                $ref: '#/components/schemas/fractional-batch'
         '400':
           $ref: '#/components/responses/general-error'
         '401':
@@ -312,7 +312,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: ../models/fractional-batch.v1.yaml
+              $ref: '#/components/schemas/fractional-batch'
     parameters:
       - $ref: '#/components/parameters/stillId'
     get:
@@ -402,7 +402,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ../models/phidget-generic.v1.yaml
+                $ref: '#/components/schemas/phidget-generic'
         '400':
           $ref: '#/components/responses/general-error'
         '401':
@@ -418,7 +418,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: ../models/phidget-generic.v1.yaml
+              $ref: '#/components/schemas/phidget-generic'
         description: ''
     get:
       summary: Get the state of the fractional still arm
@@ -474,7 +474,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ../models/phidget-generic.v1.yaml
+                $ref: '#/components/schemas/phidget-generic'
         '400':
           $ref: '#/components/responses/general-error'
         '401':
@@ -492,7 +492,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: ../models/phidget-generic.v1.yaml
+              $ref: '#/components/schemas/phidget-generic'
   '/fractionalstills/{stillId}/valve':
     parameters:
       - $ref: '#/components/parameters/stillId'
@@ -505,7 +505,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ../models/phidget-generic.v1.yaml
+                $ref: '#/components/schemas/phidget-generic'
         '400':
           $ref: '#/components/responses/general-error'
         '401':
@@ -521,7 +521,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: ../models/phidget-generic.v1.yaml
+              $ref: '#/components/schemas/phidget-generic'
         description: ''
     get:
       summary: Get the valve status
@@ -577,7 +577,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ../models/pot-still.v1.yaml
+                $ref: '#/components/schemas/pot-still'
         '400':
           $ref: '#/components/responses/general-error'
         '401':
@@ -593,7 +593,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: ../models/pot-still.v1.yaml
+              $ref: '#/components/schemas/pot-still'
         description: ''
       tags:
         - pot
@@ -629,7 +629,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ../models/pot-still.v1.yaml
+                $ref: '#/components/schemas/pot-still'
         '400':
           $ref: '#/components/responses/general-error'
         '401':
@@ -644,7 +644,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: ../models/pot-still.v1.yaml
+              $ref: '#/components/schemas/pot-still'
         description: ''
       description: Create a pot still
   /fractionalstills:
@@ -679,7 +679,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ../models/fractional-still.v1.yaml
+                $ref: '#/components/schemas/fractional-still'
         '400':
           $ref: '#/components/responses/general-error'
         '401':
@@ -693,7 +693,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: ../models/fractional-still.v1.yaml
+              $ref: '#/components/schemas/fractional-still'
       tags:
         - fractional
   /stills:
@@ -737,7 +737,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ../models/still.v1.yaml
+                $ref: '#/components/schemas/still'
         '400':
           $ref: '#/components/responses/general-error'
         '401':
@@ -754,7 +754,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: ../models/still.v1.yaml
+              $ref: '#/components/schemas/still'
   '/fractionalstills/{stillId}/batches/active':
     parameters:
       - $ref: '#/components/parameters/stillId'
