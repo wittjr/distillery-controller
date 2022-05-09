@@ -35,7 +35,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: ../models/fractional-batch-header.v1.yaml
+                  $ref: '#/components/schemas/fractional-batch-header'
         '401':
           $ref: '#/components/responses/general-error'
         '500':
@@ -56,7 +56,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ../models/fractional-batch.v1.yaml
+                $ref: '#/components/schemas/fractional-batch'
         '400':
           $ref: '#/components/responses/general-error'
         '401':
@@ -112,7 +112,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ../models/phidget-temperature.v1.yaml
+                $ref: '#/components/schemas/phidget-temperature'
         '400':
           $ref: '#/components/responses/general-error'
         '401':
@@ -172,7 +172,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: ../models/pot-batch-header.v1.yaml
+                  $ref: '#/components/schemas/pot-batch-header'
         '204':
           description: No Content
         '401':
@@ -236,7 +236,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ../models/pot-batch.v1.yaml
+                $ref: '#/components/schemas/pot-batch'
         '400':
           $ref: '#/components/responses/general-error'
         '401':
@@ -258,7 +258,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ../models/pot-batch.v1.yaml
+                $ref: '#/components/schemas/pot-batch'
         '400':
           $ref: '#/components/responses/general-error'
         '401':
@@ -329,7 +329,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: ../models/fractional-batch.v1.yaml
+                  $ref: '#/components/schemas/fractional-batch'
         '400':
           $ref: '#/components/responses/general-error'
         '401':
@@ -357,7 +357,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ../models/fractional-batch.v1.yaml
+                $ref: '#/components/schemas/fractional-batch'
         '400':
           $ref: '#/components/responses/general-error'
         '401':
@@ -377,7 +377,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ../models/fractional-still.v1.yaml
+                $ref: '#/components/schemas/fractional-still'
         '400':
           $ref: '#/components/responses/general-error'
         '401':
@@ -429,7 +429,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ../models/phidget-generic.v1.yaml
+                $ref: '#/components/schemas/phidget-generic'
         '400':
           $ref: '#/components/responses/general-error'
         '401':
@@ -452,7 +452,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ../models/phidget-temperature.v1.yaml
+                $ref: '#/components/schemas/phidget-temperature'
         '400':
           $ref: '#/components/responses/general-error'
         '401':
@@ -532,7 +532,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ../models/phidget-generic.v1.yaml
+                $ref: '#/components/schemas/phidget-generic'
         '400':
           $ref: '#/components/responses/general-error'
         '401':
@@ -557,7 +557,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ../models/pot-still.v1.yaml
+                $ref: '#/components/schemas/pot-still'
         '400':
           $ref: '#/components/responses/general-error'
         '401':
@@ -613,7 +613,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: ../models/pot-still.v1.yaml
+                  $ref: '#/components/schemas/pot-still'
         '204':
           description: No Content
         '401':
@@ -661,7 +661,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: ../models/fractional-still.v1.yaml
+                  $ref: '#/components/schemas/fractional-still'
         '204':
           description: No Content
         '401':
@@ -710,7 +710,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: ../models/still.v1.yaml
+                  $ref: '#/components/schemas/still'
         '204':
           description: No Content
         '400':
@@ -768,7 +768,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ../models/fractional-batch.v1.yaml
+                $ref: '#/components/schemas/fractional-batch'
         '400':
           $ref: '#/components/responses/general-error'
         '401':
@@ -809,7 +809,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ../models/still.v1.yaml
+                $ref: '#/components/schemas/still'
         '401':
           $ref: '#/components/responses/general-error'
         '403':
@@ -825,7 +825,207 @@ paths:
         - fractional
         - pot
 components:
-  schemas: {}
+  schemas:
+    fractional-batch-header:
+      title: fractional-batch-header
+      x-stoplight:
+        id: r3tmzaeiq24wv
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+            - fractional
+        start-time:
+          type: number
+        end-time:
+          type: number
+      required:
+        - id
+        - type
+    fractional-batch:
+      title: fractional-batch
+      type: object
+      properties:
+        id:
+          type: string
+        preheat-temperature:
+          type: number
+        preheat-time:
+          type: integer
+        heads-temp:
+          type: number
+        heads-time:
+          type: number
+        hearts-temp:
+          type: number
+        hearts-time:
+          type: number
+        tails-temp:
+          type: number
+        tails-time:
+          type: number
+        type:
+          type: string
+        start-time:
+          type: number
+        end-time:
+          type: number
+    fractional-still:
+      title: fractional-still
+      type: object
+      properties:
+        still:
+          $ref: '#/components/schemas/still'
+    phidget-temperature:
+      title: phidget-temperature
+      type: object
+      properties:
+        state:
+          type: boolean
+        temperature:
+          type: number
+    phidget-generic:
+      title: phidget
+      type: object
+      x-examples:
+        example-1:
+          state: true
+      properties:
+        state:
+          type: boolean
+      required:
+        - state
+    pot-batch-header:
+      title: pot-batch-header
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        start-time:
+          type: number
+        end-time:
+          type: number
+      required:
+        - id
+        - type
+    pot-batch:
+      title: pot-batch
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+            - gin
+            - stripping
+        max-time:
+          type: integer
+        volume-hearts:
+          type: number
+        alcohol-percent:
+          type: number
+        ingredients:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              amount:
+                type: number
+        start-time:
+          type: number
+        end-time:
+          type: number
+      required:
+        - type
+        - max-time
+      x-examples:
+        example-1:
+          id: string
+          type: gin
+          max-time: 0
+          volume-hearts: 0
+          alcohol-percent: 0
+          ingredients:
+            - name: string
+              amount: 0
+          start-time: 0
+          end-time: 0
+    simple-message:
+      type: object
+      title: SimpleMessage
+      description: Basic message response
+      x-examples:
+        example-1:
+          message: Operation completed successfully
+      additionalProperties: false
+      properties:
+        message:
+          type: string
+          example: Operation completed successfully
+      required:
+        - message
+    pot-still:
+      type: object
+      description: ''
+      x-examples:
+        example-1:
+          still:
+            id: string
+            type: fractional
+            status: free
+            phidgets:
+              - name: string
+                type: temperature-probe
+      properties:
+        still:
+          $ref: '#/components/schemas/still'
+        stipping-run-required:
+          type: boolean
+    still:
+      title: still
+      type: object
+      description: Describes a still
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+            - fractional
+            - pot
+        status:
+          type: string
+          enum:
+            - free
+            - busy
+        phidgets:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              type:
+                type: string
+                enum:
+                  - temperature-probe
+                  - solenoid
+                  - arm-extend
+                  - heating-element
+                  - high-voltage-heating-element
+              state:
+                type: boolean
+      required:
+        - id
+        - type
   securitySchemes:
     x-client-key:
       type: apiKey
@@ -865,7 +1065,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: ../models/simple-message.v1.yaml
+            $ref: '#/components/schemas/simple-message'
           examples:
             example-1:
               value:
