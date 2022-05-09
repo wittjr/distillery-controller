@@ -6,7 +6,7 @@ info:
     name: Jamie Witt
     url: 'https://jamiewitt.com'
     email: me@jamiewitt.com
-  description: A server to control distillery functions using Phidget controllers.x
+  description: A server to control distillery functions using Phidget controllers.
   license:
     name: MIT
 servers:
