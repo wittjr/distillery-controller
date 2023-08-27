@@ -10,7 +10,7 @@ info:
   license:
     name: MIT
 servers:
-  - url: 'https://localhost:3000/distillery/v1'
+  - url: 'http://localhost:3000/api/v1'
 externalDocs:
   url: 'https://www.phidgets.com/?view=api&product_id=OUT1100_0&lang=JavaScript'
   description: Phidget API
@@ -22,7 +22,7 @@ tags:
   - name: history
     description: Historical data related operations
 paths:
-  /batches:
+  /distillery/batches:
     get:
       summary: Get data for all batches
       tags:
@@ -36,6 +36,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/fractional-batch-header'
+                  $ref: '#/components/schemas/fractional-batch-header'
         '401':
           $ref: '#/components/responses/general-error'
         '500':
@@ -43,7 +44,7 @@ paths:
       operationId: get-rundata
       description: Get data for all batches
     parameters: []
-  '/batches/{batchId}':
+  '/distillery/batches/{batchId}':
     parameters:
       - $ref: '#/components/parameters/batchId'
     get:
@@ -56,6 +57,7 @@ paths:
           content:
             application/json:
               schema:
+                $ref: '#/components/schemas/fractional-batch'
                 $ref: '#/components/schemas/fractional-batch'
         '400':
           $ref: '#/components/responses/general-error'
@@ -83,6 +85,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/fractional-batch'
+                $ref: '#/components/schemas/fractional-batch'
         '400':
           $ref: '#/components/responses/general-error'
         '401':
@@ -99,7 +102,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/fractional-batch'
-  '/potstills/{stillId}/heat':
+  '/distillery/potstills/{stillId}/heat':
     get:
       summary: Get heat status
       tags:
@@ -112,6 +115,7 @@ paths:
           content:
             application/json:
               schema:
+                $ref: '#/components/schemas/phidget-temperature'
                 $ref: '#/components/schemas/phidget-temperature'
         '400':
           $ref: '#/components/responses/general-error'
@@ -135,6 +139,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/phidget-generic'
+                $ref: '#/components/schemas/phidget-generic'
         '400':
           $ref: '#/components/responses/general-error'
         '401':
@@ -152,6 +157,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/phidget-generic'
+              $ref: '#/components/schemas/phidget-generic'
       description: Turn the heat on or off
       parameters:
         - schema:
@@ -159,7 +165,7 @@ paths:
           in: query
           name: highVoltage
           description: Operate on the high voltage or normal heating element
-  '/potstills/{stillId}/batches':
+  '/distillery/potstills/{stillId}/batches':
     get:
       summary: Get all pot batch data
       tags:
@@ -172,6 +178,7 @@ paths:
               schema:
                 type: array
                 items:
+                  $ref: '#/components/schemas/pot-batch-header'
                   $ref: '#/components/schemas/pot-batch-header'
         '204':
           description: No Content
@@ -198,6 +205,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/pot-batch'
+              $ref: '#/components/schemas/pot-batch'
         description: ''
       responses:
         '201':
@@ -205,6 +213,7 @@ paths:
           content:
             application/json:
               schema:
+                $ref: '#/components/schemas/pot-batch'
                 $ref: '#/components/schemas/pot-batch'
         '400':
           $ref: '#/components/responses/general-error'
@@ -218,7 +227,7 @@ paths:
           $ref: '#/components/responses/general-error'
     parameters:
       - $ref: '#/components/parameters/stillId'
-  '/potstills/{stillId}/batches/{batchId}':
+  '/distillery/potstills/{stillId}/batches/{batchId}':
     parameters:
       - $ref: '#/components/parameters/stillId'
       - $ref: '#/components/parameters/batchId'
@@ -237,6 +246,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/pot-batch'
+                $ref: '#/components/schemas/pot-batch'
         '400':
           $ref: '#/components/responses/general-error'
         '401':
@@ -245,7 +255,7 @@ paths:
           $ref: '#/components/responses/general-error'
         '500':
           $ref: '#/components/responses/general-error'
-  '/potstills/{stillId}/batches/active':
+  '/distillery/potstills/{stillId}/batches/active':
     parameters:
       - $ref: '#/components/parameters/stillId'
     get:
@@ -258,6 +268,7 @@ paths:
           content:
             application/json:
               schema:
+                $ref: '#/components/schemas/pot-batch'
                 $ref: '#/components/schemas/pot-batch'
         '400':
           $ref: '#/components/responses/general-error'
@@ -290,7 +301,7 @@ paths:
       description: Cancel the active pot still batch
       tags:
         - fractional
-  '/fractionalstills/{stillId}/batches':
+  '/distillery/fractionalstills/{stillId}/batches':
     post:
       summary: Start a fractional still batch
       tags:
@@ -304,6 +315,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/fractional-batch'
+                $ref: '#/components/schemas/fractional-batch'
         '400':
           $ref: '#/components/responses/general-error'
         '401':
@@ -312,6 +324,7 @@ paths:
         content:
           application/json:
             schema:
+              $ref: '#/components/schemas/fractional-batch'
               $ref: '#/components/schemas/fractional-batch'
     parameters:
       - $ref: '#/components/parameters/stillId'
@@ -330,6 +343,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/fractional-batch'
+                  $ref: '#/components/schemas/fractional-batch'
         '400':
           $ref: '#/components/responses/general-error'
         '401':
@@ -339,7 +353,7 @@ paths:
         '500':
           $ref: '#/components/responses/general-error'
       parameters: []
-  '/fractionalstills/{stillId}/batches/{batchId}':
+  '/distillery/fractionalstills/{stillId}/batches/{batchId}':
     parameters:
       - $ref: '#/components/parameters/stillId'
       - $ref: '#/components/parameters/batchId'
@@ -358,6 +372,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/fractional-batch'
+                $ref: '#/components/schemas/fractional-batch'
         '400':
           $ref: '#/components/responses/general-error'
         '401':
@@ -366,7 +381,7 @@ paths:
           $ref: '#/components/responses/general-error'
         '500':
           $ref: '#/components/responses/general-error'
-  '/fractionalstills/{stillId}':
+  '/distillery/fractionalstills/{stillId}':
     get:
       summary: Get fractional still details
       tags:
@@ -377,6 +392,7 @@ paths:
           content:
             application/json:
               schema:
+                $ref: '#/components/schemas/fractional-still'
                 $ref: '#/components/schemas/fractional-still'
         '400':
           $ref: '#/components/responses/general-error'
@@ -390,7 +406,7 @@ paths:
       description: Get the details for a specified fraction still
     parameters:
       - $ref: '#/components/parameters/stillId'
-  '/fractionalstills/{stillId}/arm':
+  '/distillery/fractionalstills/{stillId}/arm':
     parameters:
       - $ref: '#/components/parameters/stillId'
     put:
@@ -402,6 +418,7 @@ paths:
           content:
             application/json:
               schema:
+                $ref: '#/components/schemas/phidget-generic'
                 $ref: '#/components/schemas/phidget-generic'
         '400':
           $ref: '#/components/responses/general-error'
@@ -419,6 +436,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/phidget-generic'
+              $ref: '#/components/schemas/phidget-generic'
         description: ''
     get:
       summary: Get the state of the fractional still arm
@@ -429,6 +447,7 @@ paths:
           content:
             application/json:
               schema:
+                $ref: '#/components/schemas/phidget-generic'
                 $ref: '#/components/schemas/phidget-generic'
         '400':
           $ref: '#/components/responses/general-error'
@@ -441,7 +460,7 @@ paths:
       description: Get the state of the arm
       tags:
         - fractional
-  '/fractionalstills/{stillId}/heat':
+  '/distillery/fractionalstills/{stillId}/heat':
     get:
       summary: get_temperature
       tags:
@@ -452,6 +471,7 @@ paths:
           content:
             application/json:
               schema:
+                $ref: '#/components/schemas/phidget-temperature'
                 $ref: '#/components/schemas/phidget-temperature'
         '400':
           $ref: '#/components/responses/general-error'
@@ -475,6 +495,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/phidget-generic'
+                $ref: '#/components/schemas/phidget-generic'
         '400':
           $ref: '#/components/responses/general-error'
         '401':
@@ -493,7 +514,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/phidget-generic'
-  '/fractionalstills/{stillId}/valve':
+  '/distillery/fractionalstills/{stillId}/valve':
     parameters:
       - $ref: '#/components/parameters/stillId'
     put:
@@ -505,6 +526,7 @@ paths:
           content:
             application/json:
               schema:
+                $ref: '#/components/schemas/phidget-generic'
                 $ref: '#/components/schemas/phidget-generic'
         '400':
           $ref: '#/components/responses/general-error'
@@ -522,6 +544,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/phidget-generic'
+              $ref: '#/components/schemas/phidget-generic'
         description: ''
     get:
       summary: Get the valve status
@@ -532,6 +555,7 @@ paths:
           content:
             application/json:
               schema:
+                $ref: '#/components/schemas/phidget-generic'
                 $ref: '#/components/schemas/phidget-generic'
         '400':
           $ref: '#/components/responses/general-error'
@@ -544,7 +568,7 @@ paths:
       description: Get the status of the valve
       tags:
         - fractional
-  '/potstills/{stillId}':
+  '/distillery/potstills/{stillId}':
     get:
       summary: Your GET endpoint
       tags:
@@ -557,6 +581,7 @@ paths:
           content:
             application/json:
               schema:
+                $ref: '#/components/schemas/pot-still'
                 $ref: '#/components/schemas/pot-still'
         '400':
           $ref: '#/components/responses/general-error'
@@ -578,6 +603,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/pot-still'
+                $ref: '#/components/schemas/pot-still'
         '400':
           $ref: '#/components/responses/general-error'
         '401':
@@ -594,10 +620,11 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/pot-still'
+              $ref: '#/components/schemas/pot-still'
         description: ''
       tags:
         - pot
-  /potstills:
+  /distillery/potstills:
     parameters: []
     get:
       summary: Get all pot stills
@@ -613,6 +640,7 @@ paths:
               schema:
                 type: array
                 items:
+                  $ref: '#/components/schemas/pot-still'
                   $ref: '#/components/schemas/pot-still'
         '204':
           description: No Content
@@ -630,6 +658,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/pot-still'
+                $ref: '#/components/schemas/pot-still'
         '400':
           $ref: '#/components/responses/general-error'
         '401':
@@ -645,9 +674,10 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/pot-still'
+              $ref: '#/components/schemas/pot-still'
         description: ''
       description: Create a pot still
-  /fractionalstills:
+  /distillery/fractionalstills:
     get:
       summary: list_fractional_stills
       description: List of all fractional stills
@@ -661,6 +691,7 @@ paths:
               schema:
                 type: array
                 items:
+                  $ref: '#/components/schemas/fractional-still'
                   $ref: '#/components/schemas/fractional-still'
         '204':
           description: No Content
@@ -680,6 +711,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/fractional-still'
+                $ref: '#/components/schemas/fractional-still'
         '400':
           $ref: '#/components/responses/general-error'
         '401':
@@ -694,9 +726,10 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/fractional-still'
+              $ref: '#/components/schemas/fractional-still'
       tags:
         - fractional
-  /stills:
+  /distillery/stills:
     get:
       summary: Get all stills
       tags:
@@ -710,6 +743,7 @@ paths:
               schema:
                 type: array
                 items:
+                  $ref: '#/components/schemas/still'
                   $ref: '#/components/schemas/still'
         '204':
           description: No Content
@@ -738,6 +772,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/still'
+                $ref: '#/components/schemas/still'
         '400':
           $ref: '#/components/responses/general-error'
         '401':
@@ -755,7 +790,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/still'
-  '/fractionalstills/{stillId}/batches/active':
+  '/distillery/fractionalstills/{stillId}/batches/active':
     parameters:
       - $ref: '#/components/parameters/stillId'
     get:
@@ -768,6 +803,7 @@ paths:
           content:
             application/json:
               schema:
+                $ref: '#/components/schemas/fractional-batch'
                 $ref: '#/components/schemas/fractional-batch'
         '400':
           $ref: '#/components/responses/general-error'
@@ -800,7 +836,7 @@ paths:
       description: Cancel the active fractional still batch
       tags:
         - fractional
-  '/stills/:stillId':
+  '/distillery/stills/{stillId}':
     get:
       summary: Get a still
       responses:
@@ -809,6 +845,7 @@ paths:
           content:
             application/json:
               schema:
+                $ref: '#/components/schemas/still'
                 $ref: '#/components/schemas/still'
         '401':
           $ref: '#/components/responses/general-error'
@@ -826,67 +863,20 @@ paths:
         - pot
 components:
   schemas:
-    fractional-batch-header:
-      title: fractional-batch-header
-      x-stoplight:
-        id: r3tmzaeiq24wv
+    simple-message:
       type: object
+      title: SimpleMessage
+      description: Basic message response
+      x-examples:
+        example-1:
+          message: Operation completed successfully
+      additionalProperties: false
       properties:
-        id:
+        message:
           type: string
-        type:
-          type: string
-          enum:
-            - fractional
-        start-time:
-          type: number
-        end-time:
-          type: number
+          example: Operation completed successfully
       required:
-        - id
-        - type
-    fractional-batch:
-      title: fractional-batch
-      type: object
-      properties:
-        id:
-          type: string
-        preheat-temperature:
-          type: number
-        preheat-time:
-          type: integer
-        heads-temp:
-          type: number
-        heads-time:
-          type: number
-        hearts-temp:
-          type: number
-        hearts-time:
-          type: number
-        tails-temp:
-          type: number
-        tails-time:
-          type: number
-        type:
-          type: string
-        start-time:
-          type: number
-        end-time:
-          type: number
-    fractional-still:
-      title: fractional-still
-      type: object
-      properties:
-        still:
-          $ref: '#/components/schemas/still'
-    phidget-temperature:
-      title: phidget-temperature
-      type: object
-      properties:
-        state:
-          type: boolean
-        temperature:
-          type: number
+        - message
     phidget-generic:
       title: phidget
       type: object
@@ -898,6 +888,14 @@ components:
           type: boolean
       required:
         - state
+    phidget-temperature:
+      title: phidget-temperature
+      type: object
+      properties:
+        state:
+          type: boolean
+        temperature:
+          type: number
     pot-batch-header:
       title: pot-batch-header
       type: object
@@ -958,37 +956,6 @@ components:
               amount: 0
           start-time: 0
           end-time: 0
-    simple-message:
-      type: object
-      title: SimpleMessage
-      description: Basic message response
-      x-examples:
-        example-1:
-          message: Operation completed successfully
-      additionalProperties: false
-      properties:
-        message:
-          type: string
-          example: Operation completed successfully
-      required:
-        - message
-    pot-still:
-      type: object
-      description: ''
-      x-examples:
-        example-1:
-          still:
-            id: string
-            type: fractional
-            status: free
-            phidgets:
-              - name: string
-                type: temperature-probe
-      properties:
-        still:
-          $ref: '#/components/schemas/still'
-        stipping-run-required:
-          type: boolean
     still:
       title: still
       type: object
@@ -1022,16 +989,84 @@ components:
                   - heating-element
                   - high-voltage-heating-element
               state:
-                type: boolean
+                type: number
       required:
         - id
         - type
+    pot-still:
+      type: object
+      description: ''
+      x-examples:
+        example-1:
+          still:
+            id: string
+            type: fractional
+            status: free
+            phidgets:
+              - name: string
+                type: temperature-probe
+      properties:
+        still:
+          $ref: '#/components/schemas/still'
+        stipping-run-required:
+          type: boolean
+    fractional-still:
+      title: fractional-still
+      type: object
+      properties:
+        still:
+          $ref: '#/components/schemas/still'
+    fractional-batch-header:
+      title: fractional-batch-header
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+            - fractional
+        start-time:
+          type: number
+        end-time:
+          type: number
+      required:
+        - id
+        - type
+    fractional-batch:
+      title: fractional-batch
+      type: object
+      properties:
+        id:
+          type: string
+        preheat-temperature:
+          type: number
+        preheat-time:
+          type: integer
+        heads-temp:
+          type: number
+        heads-time:
+          type: number
+        hearts-temp:
+          type: number
+        hearts-time:
+          type: number
+        tails-temp:
+          type: number
+        tails-time:
+          type: number
+        type:
+          type: string
+        start-time:
+          type: number
+        end-time:
+          type: number
   securitySchemes:
     x-client-key:
       type: apiKey
       in: header
       description: ''
-      name: Application Client Key
+      name: x-client-key
     token:
       type: openIdConnect
       openIdConnectUrl: 'https://localhost:3000/'
@@ -1066,6 +1101,7 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/simple-message'
+            $ref: '#/components/schemas/simple-message'
           examples:
             example-1:
               value:
@@ -1074,5 +1110,3 @@ components:
           schema:
             type: object
             properties: {}
-security:
-  - x-client-key: []

@@ -1,0 +1,1107 @@
+openapi: 3.0.0
+info:
+  title: Distillery Controller
+  version: '1.0'
+  contact:
+    name: Jamie Witt
+    url: 'https://jamiewitt.com'
+    email: me@jamiewitt.com
+  description: A server to control distillery functions using Phidget controllers.x
+  license:
+    name: MIT
+servers:
+  - url: 'http://localhost:3000/api/v1'
+externalDocs:
+  url: 'https://www.phidgets.com/?view=api&product_id=OUT1100_0&lang=JavaScript'
+  description: Phidget API
+tags:
+  - name: fractional
+    description: Fractional still related operations
+  - name: pot
+    description: Pot still related operations
+  - name: history
+    description: Historical data related operations
+paths:
+  /distillery/batches:
+    get:
+      summary: Get data for all batches
+      tags:
+        - history
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/fractional-batch-header'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
+      operationId: get-rundata
+      description: Get data for all batches
+    parameters: []
+  '/distillery/batches/{batchId}':
+    parameters:
+      - $ref: '#/components/parameters/batchId'
+    get:
+      summary: Get data for a specific batch
+      tags:
+        - history
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fractional-batch'
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '404':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
+      operationId: get-rundata-batch-id
+      description: Get data for a specific batch
+      parameters:
+        - schema:
+            type: boolean
+          in: query
+          name: graphData
+          description: Return graph data
+    put:
+      summary: Update batch info
+      operationId: put-batches-batch-id
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fractional-batch'
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '403':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
+      description: Update batch info
+      tags:
+        - history
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/fractional-batch'
+  '/distillery/stills/pot/{stillId}/heat':
+    get:
+      summary: Get heat status
+      tags:
+        - pot
+      operationId: get-potheatoff
+      description: Get heat status
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/phidget-temperature'
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '403':
+          $ref: '#/components/responses/general-error'
+        '404':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
+    parameters:
+      - $ref: '#/components/parameters/stillId'
+    put:
+      summary: Turn the heat on or off
+      operationId: post-pot-still-id-heat
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/phidget-generic'
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '403':
+          $ref: '#/components/responses/general-error'
+        '404':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
+      tags:
+        - pot
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/phidget-generic'
+      description: Turn the heat on or off
+      parameters:
+        - schema:
+            type: boolean
+          in: query
+          name: highVoltage
+          description: Operate on the high voltage or normal heating element
+  '/distillery/stills/pot/{stillId}/batches':
+    get:
+      summary: Get all pot batch data
+      tags:
+        - pot
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/pot-batch-header'
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/general-error'
+        '403':
+          $ref: '#/components/responses/general-error'
+        '404':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
+      operationId: get-potgraphdata
+      description: Get all pot batch data
+      parameters:
+        - $ref: '#/components/parameters/dataFormat'
+    post:
+      summary: Start a pot batch
+      tags:
+        - pot
+      operationId: post-setpot
+      description: Start a pot batch
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/pot-batch'
+        description: ''
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/pot-batch'
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '403':
+          $ref: '#/components/responses/general-error'
+        '404':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
+    parameters:
+      - $ref: '#/components/parameters/stillId'
+  '/distillery/stills/pot/{stillId}/batches/{batchId}':
+    parameters:
+      - $ref: '#/components/parameters/stillId'
+      - $ref: '#/components/parameters/batchId'
+    get:
+      summary: Get a specific batch for a still
+      operationId: get-potstill-batch
+      description: Get the specified batch for the specified pot still
+      tags:
+        - pot
+      parameters:
+        - $ref: '#/components/parameters/dataFormat'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/pot-batch'
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '404':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
+  '/distillery/stills/pot/{stillId}/batches/active':
+    parameters:
+      - $ref: '#/components/parameters/stillId'
+    get:
+      summary: Get the active batch
+      tags:
+        - pot
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/pot-batch'
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '404':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
+      operationId: get-active-potstill-batch
+      description: Convinence method to get the active batch for a specified pot still
+      parameters:
+        - $ref: '#/components/parameters/dataFormat'
+    delete:
+      summary: Cancel the active batch
+      operationId: cancel-pot-still-batch
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '403':
+          $ref: '#/components/responses/general-error'
+        '404':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
+      description: Cancel the active pot still batch
+      tags:
+        - fractional
+  '/distillery/stills/fractional/{stillId}/batches':
+    post:
+      summary: Start a fractional still batch
+      tags:
+        - fractional
+      operationId: create-fractionalstill-batch
+      description: Start a still batch
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fractional-batch'
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/fractional-batch'
+    parameters:
+      - $ref: '#/components/parameters/stillId'
+    get:
+      summary: Get all batches for a still
+      operationId: get-all-fractionalstill-batches
+      description: Get all batches for a specified fractional still
+      tags:
+        - fractional
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/fractional-batch'
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '404':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
+      parameters: []
+  '/distillery/stills/fractional/{stillId}/batches/{batchId}':
+    parameters:
+      - $ref: '#/components/parameters/stillId'
+      - $ref: '#/components/parameters/batchId'
+    get:
+      summary: Get a specific batch for a still
+      operationId: get-fractionalstill-batch
+      description: Get the specified batch for the specified fractional still
+      tags:
+        - fractional
+        - history
+      parameters:
+        - $ref: '#/components/parameters/dataFormat'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fractional-batch'
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '404':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
+    put:
+      summary: Update batch info
+      operationId: put-batches-batch-id
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fractional-batch'
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '403':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
+      description: Update batch info
+      tags:
+        - history
+        - fractional
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/fractional-batch'
+  '/distillery/stills/fractional/{stillId}':
+    get:
+      summary: Get fractional still details
+      tags:
+        - fractional
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fractional-still'
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '404':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
+      operationId: get-fractionalsummary
+      description: Get the details for a specified fraction still
+    parameters:
+      - $ref: '#/components/parameters/stillId'
+  '/distillery/stills/fractional/{stillId}/arm':
+    parameters:
+      - $ref: '#/components/parameters/stillId'
+    put:
+      summary: Move the fractional still arm
+      operationId: perform-arm-action
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/phidget-generic'
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '404':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
+      description: Extend or retract the arm
+      tags:
+        - fractional
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/phidget-generic'
+        description: ''
+    get:
+      summary: Get the state of the fractional still arm
+      operationId: get-fractional-still-id-arm
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/phidget-generic'
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '404':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
+      description: Get the state of the arm
+      tags:
+        - fractional
+  '/distillery/stills/fractional/{stillId}/heat':
+    get:
+      summary: get_temperature
+      tags:
+        - fractional
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/phidget-temperature'
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '404':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
+      operationId: get-heat-status
+      description: Get the status of the heating element
+    parameters:
+      - $ref: '#/components/parameters/stillId'
+    put:
+      summary: Turn the heat on or off
+      operationId: post-fractional-still-id-heat
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/phidget-generic'
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '403':
+          $ref: '#/components/responses/general-error'
+        '404':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
+      description: Turn the heat on or off
+      tags:
+        - fractional
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/phidget-generic'
+  '/distillery/stills/fractional/{stillId}/valve':
+    parameters:
+      - $ref: '#/components/parameters/stillId'
+    put:
+      summary: update_valve_state
+      operationId: perform-valve-action
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/phidget-generic'
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '404':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
+      description: Open or close the valve
+      tags:
+        - fractional
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/phidget-generic'
+        description: ''
+    get:
+      summary: Get the valve status
+      operationId: get-fractional-still-id-valve
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/phidget-generic'
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '404':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
+      description: Get the status of the valve
+      tags:
+        - fractional
+  '/distillery/stills/pot/{stillId}':
+    get:
+      summary: Your GET endpoint
+      tags:
+        - pot
+      operationId: get-pot
+      description: Get the details of a pot still
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/pot-still'
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '404':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
+    parameters:
+      - $ref: '#/components/parameters/stillId'
+    patch:
+      summary: Update pot status
+      operationId: patch-pot-still-id
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/pot-still'
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '403':
+          $ref: '#/components/responses/general-error'
+        '404':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
+      description: Update pot status
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/pot-still'
+        description: ''
+      tags:
+        - pot
+  /distillery/stills/pot:
+    parameters: []
+    get:
+      summary: Get all pot stills
+      tags:
+        - pot
+      operationId: get-pots-pot_id
+      description: Retrieve a list of all pot stills
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/pot-still'
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '500':
+          $ref: '#/components/responses/general-error'
+    post:
+      summary: Create a pot still
+      operationId: post-pot
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/pot-still'
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '403':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
+      tags:
+        - pot
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/pot-still'
+        description: ''
+      description: Create a pot still
+  /distillery/stills/fractional:
+    get:
+      summary: list_fractional_stills
+      description: List of all fractional stills
+      tags:
+        - fractional
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/fractional-still'
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
+      operationId: get-fractionals
+    parameters: []
+    post:
+      summary: create_fractional_still
+      operationId: post-fractional
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fractional-still'
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '403':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
+      description: Create a fractional still
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/fractional-still'
+      tags:
+        - fractional
+  /distillery/stills:
+    get:
+      summary: Get all stills
+      tags:
+        - fractional
+        - pot
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/still'
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
+      operationId: get-stills
+      description: List all of the available stills
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: type
+          description: 'The type of still to retrieve, it not specified all stills will be returned'
+    parameters: []
+    post:
+      summary: Create a still
+      operationId: post-stills
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/still'
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '403':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
+      description: Create a still
+      tags:
+        - pot
+        - fractional
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/still'
+  '/distillery/stills/fractional/{stillId}/batches/active':
+    parameters:
+      - $ref: '#/components/parameters/stillId'
+    get:
+      summary: Get the active batch
+      tags:
+        - fractional
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fractional-batch'
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '404':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
+      operationId: get-active-fractionalstill-batch
+      description: Convinence method to get the active batch for a specified fracational still
+      parameters:
+        - $ref: '#/components/parameters/dataFormat'
+    delete:
+      summary: Cancel the active batch
+      operationId: cancel-fractional-still-batch
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/general-error'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '403':
+          $ref: '#/components/responses/general-error'
+        '404':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
+      description: Cancel the active fractional still batch
+      tags:
+        - fractional
+  '/distillery/stills/{stillId}':
+    get:
+      summary: Get a still
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/still'
+        '401':
+          $ref: '#/components/responses/general-error'
+        '403':
+          $ref: '#/components/responses/general-error'
+        '404':
+          $ref: '#/components/responses/general-error'
+        '500':
+          $ref: '#/components/responses/general-error'
+      operationId: 'get-stills-:stillId'
+      description: Get a still
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: type
+          description: 'The type of still to retrieve, it not specified all stills will be returned'
+      tags:
+        - fractional
+        - pot
+components:
+  schemas:
+    simple-message:
+      type: object
+      title: SimpleMessage
+      description: Basic message response
+      x-examples:
+        example-1:
+          message: Operation completed successfully
+      additionalProperties: false
+      properties:
+        message:
+          type: string
+          example: Operation completed successfully
+      required:
+        - message
+    phidget-generic:
+      title: phidget
+      type: object
+      x-examples:
+        example-1:
+          state: true
+      properties:
+        state:
+          type: boolean
+      required:
+        - state
+    phidget-temperature:
+      title: phidget-temperature
+      type: object
+      properties:
+        state:
+          type: boolean
+        temperature:
+          type: number
+    pot-batch-header:
+      title: pot-batch-header
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        start-time:
+          type: number
+        end-time:
+          type: number
+      required:
+        - id
+        - type
+    pot-batch:
+      title: pot-batch
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+            - gin
+            - stripping
+        max-time:
+          type: integer
+        volume-hearts:
+          type: number
+        alcohol-percent:
+          type: number
+        ingredients:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              amount:
+                type: number
+        start-time:
+          type: number
+        end-time:
+          type: number
+      required:
+        - type
+        - max-time
+      x-examples:
+        example-1:
+          id: string
+          type: gin
+          max-time: 0
+          volume-hearts: 0
+          alcohol-percent: 0
+          ingredients:
+            - name: string
+              amount: 0
+          start-time: 0
+          end-time: 0
+    still:
+      title: still
+      type: object
+      description: Describes a still
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+            - fractional
+            - pot
+        status:
+          type: string
+          enum:
+            - free
+            - busy
+        phidgets:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              type:
+                type: string
+                enum:
+                  - temperature-probe
+                  - solenoid
+                  - arm-extend
+                  - heating-element
+                  - high-voltage-heating-element
+              state:
+                type: number
+      required:
+        - id
+        - type
+    pot-still:
+      type: object
+      description: ''
+      x-examples:
+        example-1:
+          still:
+            id: string
+            type: fractional
+            status: free
+            phidgets:
+              - name: string
+                type: temperature-probe
+      properties:
+        still:
+          $ref: '#/components/schemas/still'
+        stipping-run-required:
+          type: boolean
+    fractional-still:
+      title: fractional-still
+      type: object
+      properties:
+        still:
+          $ref: '#/components/schemas/still'
+    fractional-batch-header:
+      title: fractional-batch-header
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+            - fractional
+        start-time:
+          type: number
+        end-time:
+          type: number
+      required:
+        - id
+        - type
+    fractional-batch:
+      title: fractional-batch
+      type: object
+      properties:
+        id:
+          type: string
+        preheat-temperature:
+          type: number
+        preheat-time:
+          type: integer
+        heads-temp:
+          type: number
+        heads-time:
+          type: number
+        hearts-temp:
+          type: number
+        hearts-time:
+          type: number
+        tails-temp:
+          type: number
+        tails-time:
+          type: number
+        type:
+          type: string
+        start-time:
+          type: number
+        end-time:
+          type: number
+  securitySchemes:
+    x-client-key:
+      type: apiKey
+      in: header
+      description: ''
+      name: x-client-key
+    token:
+      type: openIdConnect
+      openIdConnectUrl: 'https://localhost:3000/'
+  parameters:
+    batchId:
+      name: batchId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The ID of the batch run
+    stillId:
+      name: stillId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The ID of the still on which to operate
+    dataFormat:
+      name: dataFormat
+      in: query
+      required: false
+      schema:
+        type: string
+        enum:
+          - graph
+      description: The format to return the data
+  responses:
+    general-error:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/simple-message'
+          examples:
+            example-1:
+              value:
+                message: Something went wrong
+        application/xml:
+          schema:
+            type: object
+            properties: {}
